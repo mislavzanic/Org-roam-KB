@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       83d9dce3-2a2c-4a5f-a861-44d51dc50021
+:END:
+#+title: Kubernetes
+
+* Service
+** Service without a selector
+- you can reference external services using a service without a selector
+- selector just creates a *Kubernetes Endpoint* object that points to another k8s resource
+
+- when creating a service without a selector, k8s endpoint must be created explicitly
+  - these two are linked using ~medatada.name~ field
