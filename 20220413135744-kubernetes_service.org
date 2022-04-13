@@ -3,8 +3,29 @@
 :END:
 #+title: Kubernetes Service
 
+* References
+- link: [[https://kubernetes.io/docs/concepts/services-networking/service/][Kubernetes Service]]
+
+* Service resource
+** Example
+#+begin_src yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+#+end_src
+
+- This specification creates a new Service object named /my-service/, which targets TCP port 9376 on any Pod with the ~app=MyApp~ label
+- The controller for the Service selector continuously scans for Pods that match its selector, and then POSTs any updates to an Endpoint object also named /my-service/
+
 * Service without a selector
-- link: [[]]
 - you can reference external services using a service without a selector
 - selector just creates a *Kubernetes Endpoint* object that points to another k8s resource
 
@@ -33,3 +54,8 @@ subsets:
     ports:
       - port: 9200
 #+end_src
+
+* Service Types
+- ~Cluster IP~ < ~NodePort~ < ~LoadBalancer~
+
+** Cluster IP
