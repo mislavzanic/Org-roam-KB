@@ -2,3 +2,5 @@
 :ID:       62116a71-5e84-4637-8f94-b35c6b87eb6d
 :END:
 #+title: Nix
+
+- [[id:19e4e11b-1cae-4453-a03b-8c5d93807b3a][NixFlake]]

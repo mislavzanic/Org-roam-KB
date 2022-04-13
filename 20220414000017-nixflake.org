@@ -1,0 +1,95 @@
+:PROPERTIES:
+:ID:       19e4e11b-1cae-4453-a03b-8c5d93807b3a
+:END:
+#+title: NixFlake
+
+* Resources
+- [[https://nixos.wiki/wiki/Flakes][link to wiki]]
+- [[https://github.com/hlissner/dotfiles][Dotfiles I shamelessly rummaged through]]
+- [[https://christine.website/blog/nix-flakes-1-2022-02-21][Mby useful?]]
+
+* General
+- Most flakes provide their functionality through Nixpkgs overlays or NixOS modules, which are composed into the top-level flake's ~nixpkgs~ input; so their own ~nixpkgs~ input is usually irrelevant
+
+* Modules
+- imported to flake by listing a path to the module
+- [[id:d3c92fd1-9119-497a-9db0-11b37371c804][NixModules]]
+
+* Schema
+- It has 3 top-level attributes:
+  - ~description~ is a string describing the flake.
+  - ~inputs~ is an attribute set of all the dependencies of the flake.
+  - ~outputs~ is a function of one argument that takes an attribute set of all the realized inputs, and outputs another attribute set which schema is described below.
+
+*** Input schema
+#+begin_src nix
+{
+  inputs = {
+    # github example, also supported gitlab:
+    nixpkgs.url = "github:Mic92/nixpkgs/master";
+    # git urls
+    git-example.url = "git+https://git.somehost.tld/user/path";
+    # local directories (for absolute paths you can omit 'path:')
+    directory-example.url = "path:/path/to/repo";
+    # Use this for non-flakes
+    bar.url = "github:foo/bar/branch";
+    bar.flake = false;
+    # Overwrite inputs in a flake
+    # This is useful to use the same nixpkgs version in both flakes
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # Pin flakes to a specific revision
+    nix-doom-emacs.url = "github:vlaci/nix-doom-emacs?rev=238b18d7b2c8239f676358634bfb32693d3706f3";
+    nix-doom-emacs.flake = false;
+    # To use a subdirectory of a repo, pass dir=
+    nixpkgs.url = "github:foo/bar?dir=shu";
+  }
+}
+#+end_src
+
+*** Output schema
+#+begin_src nix
+{ self, ... }@inputs:
+{
+  # Executed by `nix flake check`
+  checks."<system>"."<name>" = derivation;
+  # Executed by `nix build .#<name>`
+  packages."<system>"."<name>" = derivation;
+  # Executed by `nix build .`
+  defaultPackage."<system>" = derivation;
+  # Executed by `nix run .#<name>`
+  apps."<system>"."<name>" = {
+    type = "app";
+    program = "<store-path>";
+  };
+  # Executed by `nix run . -- <args?>`
+  defaultApp."<system>" = { type = "app"; program = "..."; };
+
+  # Used for nixpkgs packages, also accessible via `nix build .#<name>`
+  legacyPackages."<system>"."<name>" = derivation;
+  # Default overlay, consumed by other flakes
+  overlay = final: prev: { };
+  # Same idea as overlay but a list or attrset of them.
+  overlays = {};
+  # Default module, consumed by other flakes
+  nixosModule = { config }: { options = {}; config = {}; };
+  # Same idea as nixosModule but a list or attrset of them.
+  nixosModules = {};
+  # Used with `nixos-rebuild --flake .#<hostname>`
+  # nixosConfigurations."<hostname>".config.system.build.toplevel must be a derivation
+  nixosConfigurations."<hostname>" = {};
+  # Used by `nix develop`
+  devShell."<system>" = derivation;
+  # Used by `nix develop .#<name>`
+  devShells."<system>"."<name>" = derivation;
+  # Hydra build jobs
+  hydraJobs."<attr>"."<system>" = derivation;
+  # Used by `nix flake init -t <flake>`
+  defaultTemplate = {
+    path = "<store-path>";
+    description = "template description goes here?";
+  };
+  # Used by `nix flake init -t <flake>#<name>`
+  templates."<name>" = { path = "<store-path>"; description = ""; };
+}
+#+end_src
