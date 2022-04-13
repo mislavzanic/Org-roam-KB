@@ -3,10 +3,9 @@
 :END:
 #+title: Kubernetes
 
-* Service
-** Service without a selector
-- you can reference external services using a service without a selector
-- selector just creates a *Kubernetes Endpoint* object that points to another k8s resource
+* Resources
+- [[id:090548ee-494c-4ee1-ab4f-46740e9fca90][Kubernetes Deployment]]
 
-- when creating a service without a selector, k8s endpoint must be created explicitly
-  - these two are linked using ~medatada.name~ field
+- [[id:69d543a9-0941-4dba-8120-7af004a35957][Kubernetes Service]]
+
+- [[id:8ea71d18-c3b7-4a41-a6d3-8fdc28a6ba7b][Kubernetes Stateful Set]]
