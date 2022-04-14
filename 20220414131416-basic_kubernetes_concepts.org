@@ -3,6 +3,9 @@
 :END:
 #+title: Basic Kubernetes Concepts
 
+* Resources
+- [[id:cb3e6187-0e22-4075-8d1c-e13b65b683b8][Kubectl useful commands]]
+
 * Pods
  - consists of one or more containers, storage resources, and a unique IP address in the Kubernetes cluster network
  - in order to run containers, k8s ~schedules~ pods to run on servers in the cluster
@@ -79,8 +82,6 @@ Events:
   Normal  Started    12m   kubelet            Started container nginx
 #+end_src
 
-
-** Useful commands
 
 * Clustering and nodes
 - multiple servers that run our workloads
