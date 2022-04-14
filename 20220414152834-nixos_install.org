@@ -1,0 +1,82 @@
+:PROPERTIES:
+:ID:       5c3ba5e0-ae83-402c-a988-848bb0127c84
+:END:
+#+title: NixOs Install
+
+* Resources
+- this is copied from [[https://nixos.org/manual/nixos/stable/index.html#nixos-manual][NixOs Manual]]
+
+* Installing NixOS
+** Booting the system
+*** Prep usb
+#+begin_src sh
+sudo dd if=./nixos.iso of=/dev/sdn #/dev/sdn is the block of my usb
+#+end_src
+
+*** Boot
+- The installation media contains a basic NixOS installation. When it’s finished booting, it should have detected most of your hardware.
+- The NixOS manual is available by running ~nixos-help~.
+- You are logged-in automatically as ~nixos~. The nixos user account has an empty password so you can use sudo without a password:
+    #+begin_src sh
+    $ sudo -i
+    #+end_src
+
+** Partitioning and formattion
+*** UEFI (GPT)
+- Here's an example partition scheme for UEFI, using ~/dev/sda~ as the device.
+
+- Create a GPT partition table
+  #+begin_src
+    # parted /dev/sda -- mklabel gpt
+  #+end_src
+
+- Add the /root/ partition
+  #+begin_src
+    # parted /dev/sda -- mkpart primary 512MiB -8GiB
+  #+end_src
+
+- Add the /swap/ partition
+  #+begin_src
+    # parted /dev/sda -- mkpart primary linux-swap -8GiB 100%
+  #+end_src
+
+- Add the /boot/ partiton
+  #+begin_src
+    # parted /dev/sda -- mkpart ESP fat32 1MiB 512MiB
+    # parted /dev/sda -- set 3 esp on
+  #+end_src
+
+*** Formatting
+- ext4 partition
+  #+begin_src
+    # mkfs.ext4 -L nixos /dev/sda1
+  #+end_src
+
+- swap partiton
+  #+begin_src
+    # mkswap -L swap /dev/sda2
+  #+end_src
+
+**** UEFI systems
+- boot partition
+  #+begin_src
+    # mkfs.fat -F 32 -n boot /dev/sda3
+  #+end_src
+
+** Installing
+- Mount the target file system on which NixOS should be installed on /mnt, e.g.
+  #+begin_src
+    # mount /dev/disk/by-label/nixos /mnt
+  #+end_src
+
+- UEFI systems
+  - Mount the boot file system on /mnt/boot, e.g.
+  #+begin_src
+    # mkdir -p /mnt/boot
+    # mount /dev/disk/by-label/boot /mnt/boot
+  #+end_src
+
+- Activate swap
+  #+begin_src
+    # swapon /dev/sda2
+  #+end_src

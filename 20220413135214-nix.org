@@ -3,4 +3,8 @@
 :END:
 #+title: Nix
 
+* Resources
+** Flakes
 - [[id:19e4e11b-1cae-4453-a03b-8c5d93807b3a][NixFlake]]
+
+** NixOs install
