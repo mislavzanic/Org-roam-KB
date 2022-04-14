@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       286c624c-0d47-4710-9d49-9388e5c6a01b
+:END:
+#+title: Basic Kubernetes Concepts
+
+* Pods
+ - consists of one or more containers, storage resources, and a unique IP address in the Kubernetes cluster network
+
++-------------------------------+
+|                               |
+|             Node              |
+|                               |
++-------------------------------+
+| +-----------+   +-----------+ |
+| | Pod       |   | Pod       | |
+| | 10.244.0.1|   | 10.244.0.2| |
+| |+---------+|   |+---------+| |
+| ||Container||   ||Container|| |
+| |+---------+|   |+---------+| |
+| +-----------+   +-----------+ |
+|                               |
++-------------------------------+
+
+- in order to run containers, k8s ~schedules~ pods to run on servers in the cluster
+
+** Example pod
+#+begin_src yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+#+end_src

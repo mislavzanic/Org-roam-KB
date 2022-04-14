@@ -9,3 +9,30 @@
 - [[id:69d543a9-0941-4dba-8120-7af004a35957][Kubernetes Service]]
 - [[id:090548ee-494c-4ee1-ab4f-46740e9fca90][Kubernetes Deployment]]
 - [[id:8ea71d18-c3b7-4a41-a6d3-8fdc28a6ba7b][Kubernetes Stateful Set]]
+
+
+* Kubectl useful commands
+** Get Pods
+- ~kubectl get pods~
+  #+begin_src sh
+  cloud_user@b0415b8e872c:~$ kubectl get pods
+  NAME    READY   STATUS    RESTARTS   AGE
+  nginx   1/1     Running   0          34s
+  #+end_src
+
+  - ~kubectl get pods -o wide~
+    #+begin_src sh
+    cloud_user@b0415b8e872c:~$ kubectl get pods -o wide
+    NAME    READY   STATUS    RESTARTS   AGE   IP           NODE                           NOMINATED NODE   READINESS GATES
+    nginx   1/1     Running   0          41s   10.244.1.2   b0415b8e871c.mylabserver.com   <none>           <none>
+    #+end_src
+
+** Get Nodes
+- ~kubectl get nodes~
+  #+begin_src sh
+  cloud_user@b0415b8e872c:~$ kubectl get nodes
+  NAME                           STATUS   ROLES                  AGE    VERSION
+  b0415b8e871c.mylabserver.com   Ready    <none>                 113m   v1.22.6
+  b0415b8e872c.mylabserver.com   Ready    control-plane,master   123m   v1.22.6
+  b0415b8e873c.mylabserver.com   Ready    <none>                 110m   v1.22.6
+  #+end_src
