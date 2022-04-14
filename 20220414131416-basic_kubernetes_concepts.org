@@ -5,23 +5,7 @@
 
 * Pods
  - consists of one or more containers, storage resources, and a unique IP address in the Kubernetes cluster network
-
-+-------------------------------+
-|                               |
-|             Node              |
-|                               |
-+-------------------------------+
-| +-----------+   +-----------+ |
-| | Pod       |   | Pod       | |
-| | 10.244.0.1|   | 10.244.0.2| |
-| |+---------+|   |+---------+| |
-| ||Container||   ||Container|| |
-| |+---------+|   |+---------+| |
-| +-----------+   +-----------+ |
-|                               |
-+-------------------------------+
-
-- in order to run containers, k8s ~schedules~ pods to run on servers in the cluster
+ - in order to run containers, k8s ~schedules~ pods to run on servers in the cluster
 
 ** Example pod
 #+begin_src yaml
@@ -34,3 +18,73 @@ spec:
   - name: nginx
     image: nginx
 #+end_src
+
+#+begin_src sh
+cloud_user@b0415b8e872c:~$ kubectl create -f ./nginx.yaml
+
+cloud_user@b0415b8e872c:~$ kubectl get pods
+NAME    READY   STATUS              RESTARTS   AGE
+nginx   0/1     ContainerCreating   0          3s
+
+cloud_user@b0415b8e872c:~$ kubectl describe pod nginx
+Name:         nginx
+Namespace:    default
+Priority:     0
+Node:         b0415b8e871c.mylabserver.com/172.31.127.180
+Start Time:   Thu, 14 Apr 2022 12:42:50 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.244.1.2
+IPs:
+  IP:  10.244.1.2
+Containers:
+  nginx:
+    Container ID:   docker://c07f62275d5c9e2453da7bf8d71a7f4b14d1b70d64d2b5e09156c87947510e4d
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:2275af0f20d71b293916f1958f8497f987b8d8fd8113df54635f2a5915002bf1
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Thu, 14 Apr 2022 12:43:01 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vxtmx (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-vxtmx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  12m   default-scheduler  Successfully assigned default/nginx to b0415b8e871c.mylabserver.com
+  Normal  Pulling    12m   kubelet            Pulling image "nginx"
+  Normal  Pulled     12m   kubelet            Successfully pulled image "nginx" in 7.86320006s
+  Normal  Created    12m   kubelet            Created container nginx
+  Normal  Started    12m   kubelet            Started container nginx
+#+end_src
+
+
+** Useful commands
+
+* Clustering and nodes
+- multiple servers that run our workloads
+
+** Control server
+- manages and controls the cluster and hosts the Kubernetes API
+- separate from worker nodes
