@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       a4a47d05-4daa-4b91-ba93-7ce6a6c61ba1
+:END:
+#+title: Cloud Guru Notes
+
+- [[id:56c79c3b-49cb-4abc-99dc-22890d0e2cdc][Building a k8s cluster]]

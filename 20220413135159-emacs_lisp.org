@@ -2,3 +2,39 @@
 :ID:       ef9537d3-e761-4f83-a980-73738237aa2f
 :END:
 #+title: Emacs lisp
+
+* Lists
+
+** Cons Cells
+- cons is like a pair or "tuple" with values that can be accessed with ~car~ and ~cdr~
+
+- ~car~ - Get the first value in the cons
+- ~cdr~ - Get the second value in the cons
+
+#+begin_src emacs-lisp
+(cons 1 2) ;; '(1 . 2)
+'(1 . 2)   ;; '(1 . 2)
+
+(car '(1 . 2)) ;; 1
+(cdr '(1 . 2)) ;; 2
+
+(setq some-cons '(1 . 2))
+(setcar some-cons 3)
+some-cons ;; '(3 . 2)
+
+(setcdr some-cons 4)
+some-cons ;; '(3 . 4)
+#+end_src
+
+** Building lists from cons
+#+begin_src emacs-lisp
+(cons 1 '(2 3 4))
+(cons 1 (cons 2 (cons 3 (cons 4 nil))))
+
+(cons '(1 2 3) '(4))   ;; ((1 2 3) (4))
+
+(append '(1 2 3) 4)    ;; (1 2 3 . 4)
+(append '(1 2 3) '(4)) ;; (1 2 3 4)
+#+end_src
+
+** Predicates

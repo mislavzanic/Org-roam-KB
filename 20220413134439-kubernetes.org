@@ -4,8 +4,8 @@
 #+title: Kubernetes
 
 * Resources
-- [[id:090548ee-494c-4ee1-ab4f-46740e9fca90][Kubernetes Deployment]]
+- [[id:8fe406bb-a24c-41c4-824c-1e2d70594d4b][Kubernetes Networking]]
 
 - [[id:69d543a9-0941-4dba-8120-7af004a35957][Kubernetes Service]]
-
+- [[id:090548ee-494c-4ee1-ab4f-46740e9fca90][Kubernetes Deployment]]
 - [[id:8ea71d18-c3b7-4a41-a6d3-8fdc28a6ba7b][Kubernetes Stateful Set]]

@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       56c79c3b-49cb-4abc-99dc-22890d0e2cdc
+:END:
+#+title: Building a k8s cluster
+
+* Installing Docker
+
+* Installing Kubeadm, Kubelet and Kubectl
+
+* Bootstrapping the Cluster
+
+* Configuring Networking with Flannel

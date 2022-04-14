@@ -7,6 +7,15 @@
 - link: [[https://kubernetes.io/docs/concepts/services-networking/service/][Kubernetes Service]]
 
 * Service resource
+
+- "stable abstraction point for a bunch of pods"
+- every service has a name and an IP (those are stable (not changing))
+- registers with a clusters native DNS service
+- has a frontend conf (IP, name) and backend conf (Label selector)
+
+- every service with a /label selector/ gets an ~Endpoint~ (list of pod IPs and ports that match the services label selector)
+  - services look up pod IPs using Endpoints
+
 ** Example
 #+begin_src yaml
 apiVersion: v1
@@ -56,6 +65,18 @@ subsets:
 #+end_src
 
 * Service Types
-- ~Cluster IP~ < ~NodePort~ < ~LoadBalancer~
+- ~ClusterIP~ < ~NodePort~ < ~LoadBalancer~
 
-** Cluster IP
+** ClusterIP
+- default
+- Gets own IP
+- Only accessible from within cluster
+
+** NodePort
+- Gets cluster-wide *port*
+- Also accessible from outside of cluster
+- all rules from ClusterIP apply
+
+** LoadBalancer
+- integrates with public cloud platform
+- Has an IP address accessible from outside of cluster
