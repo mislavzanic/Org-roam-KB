@@ -8,3 +8,4 @@
 - [[id:19e4e11b-1cae-4453-a03b-8c5d93807b3a][NixFlake]]
 
 ** NixOs install
+- [[id:5c3ba5e0-ae83-402c-a988-848bb0127c84][NixOs Install]]

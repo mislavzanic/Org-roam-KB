@@ -16,6 +16,13 @@
 - every service with a /label selector/ gets an ~Endpoint~ (list of pod IPs and ports that match the services label selector)
   - services look up pod IPs using Endpoints
 
+** Ports
+*** port
+- exposes the Kubernetes service on the specified port within the cluster. Other pods within the cluster can communicate with this server on the specified port.
+
+*** targetPort
+- the port on which the service will send requests to, that your pod will be listening on. Your application in the container will need to be listening on this port also.
+
 ** Example
 #+begin_src yaml
 apiVersion: v1
@@ -40,6 +47,8 @@ spec:
 
 - when creating a service without a selector, k8s endpoint must be created explicitly
   - these two are linked using ~medatada.name~ field
+
+- when using a service without a selector (let's name this service serviceA) to point to a LoadBalancer service (serviceB) in a different cluster, targetPort of serviceA needs to be set to the value of nodePort of serviceB (need to test if this is true)
 
 ** Example
 #+begin_src yaml

@@ -1,0 +1,7 @@
+:PROPERTIES:
+:ID:       049b8c13-b4e3-41d9-90ad-43ed5a770ed7
+:END:
+#+title: NixPackages
+
+* Example
+- [[https://nixos.wiki/wiki/Packaging/Ruby][Packaging/Ruby]]

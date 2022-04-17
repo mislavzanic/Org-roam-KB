@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       0dfe94d8-41a9-41cb-bac6-35d0056ab424
+:END:
+#+title: AcerSwift3 Sound
+
+* Resources
+- [[https://askubuntu.com/questions/1082994/acer-swift-3-microphone-not-working-with-ubuntu-18-04][StackExchange Link]]
+- [[https://forum.manjaro.org/t/no-audio-on-acer-swift-3/57194][sound not working fix]]

@@ -43,7 +43,7 @@
     nix-doom-emacs.flake = false;
     # To use a subdirectory of a repo, pass dir=
     nixpkgs.url = "github:foo/bar?dir=shu";
-  }
+  };
 }
 #+end_src
 

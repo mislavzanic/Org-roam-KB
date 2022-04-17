@@ -80,3 +80,14 @@ sudo dd if=./nixos.iso of=/dev/sdn #/dev/sdn is the block of my usb
   #+begin_src
     # swapon /dev/sda2
   #+end_src
+
+- Create a file ~/mnt/etc/nixos/configuration.nix~ that specifies the intended configuration of the system
+  - The command nixos-generate-config can generate an initial configuration file for you
+    #+begin_src
+      # nixos-generate-config --root /mnt
+    #+end_src
+
+- Do the installation
+  #+begin_src
+    # nixos-generate-config --root /mnt
+  #+end_src
