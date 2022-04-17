@@ -14,3 +14,11 @@
     options snd-hda-intel dmic_detect=0
     options snd-hda-intel model=dell-headset-multi
   #+end_src
+
+- command
+  #+begin_src sh
+    cat << EOF
+    options snd-hda-intel dmic_detect=0
+    options snd-hda-intel model=dell-headset-multi
+    EOF | sudo tee /etc/modprobe.d/alsa-base.conf
+  #+end_src
