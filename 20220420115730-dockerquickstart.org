@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       5e313e85-ddc5-4b7e-821e-436796a090ce
+:END:
+#+title: DockerQuickStart
+
+- course done on CentOS 8
+
+* Install
+- install extra packages
+#+begin_src bash
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+#+end_src
+
+- add docker to yum and install
+#+begin_src bash
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce --allowerasing
+#+end_src
+
+- enable and start docker
+#+begin_src bash
+sudo systemctl enable docker --now
+#+end_src

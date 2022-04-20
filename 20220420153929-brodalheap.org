@@ -1,0 +1,53 @@
+:PROPERTIES:
+:ID:       b26511c1-f2f1-4d15-8372-97d586391843
+:END:
+#+title: BrodalHeap
+
+* Notacija
+- \( n_i(x) \) - broj djece cvora \(x\) ranga \(i\)
+- \( r(x) \) - rang cvora \(x\) == logaritam velicine podstabla ciji je korijen cvor \(x\)
+- \( t_i \) - korjen stabla \( T_i \)
+- \(p(x)\) - roditelj od \(x\)
+
+
+* The Data Structure
+- basic ideja -> priority queue == stabla \(T_1\) and \(T_2\)
+  - svi cvorovi sadrze jedan element i prirodni broj (rang)
+- djeca cvora su spremljena u doubly linked listi, djeca su poredana silazno po rangu
+
+** Invarijante S1-S5
+- S1. Ako je \(x\) list, onda \(r(x) = 0\)
+  - list ima rang 0
+- S2. \(r(x) < r(p(x))\)
+  - rang 'pada'
+- S3. ako \(r(x) > 0\) onda \(n_{r(x)-1}(x) \ge 2\)
+  - == svojstvo koje ima i binomni heap == -> cvor ranga \(k\) mora imat dvoje (kod Brodala barem dvoje) djece ranga \(k-1\)
+- S4. \(n_i(x) \in \{0,2,\ldots,7\}\) -> broj djece cvora \(x\) ranga \(i\) je strogo iz \(\{0,2,\ldots,7\}\)
+  - bitno svojstvo
+  - rezanje djeteta sa najvecim rangom (najljevijeg) ne krsi S3.
+  - \(n_i(x) < 7\) je posljedica konstrukcije /Guide/ strukture podataka
+- S5. \(T_2 = \emptyset\) or \(r(t_1) \le r(t_2)\)
+  - ovo je postignuto nakon sto se odreze podstablo stabla \(T_1\)?
+
+** W i V skupovi
+- za tzv. /violating/ cvorove
+  - cvorovi koji krse min heap pravilo
+- za svaki cvor \(x\) pratimo skupove \(W(x)\) i \(V(x)\)
+  - ako \(y \in V(x) \cup W(x)\) onda:
+    1. \(x\) i \(y\) *ne* moraju pripadati istom stablu \(T_i\)
+    2. \(r(y) \le r(x)\) *ne* mora vrijediti
+- implementirani pomocu doubly linked listi
+
+- cvorovi se dodaju u \(V\) iskljucivo na pocetak liste (lijevo)
+- cvorovi se ddodaju u \(W\) tako da su cvorovi istog ranga skupa
+  - ako takvih nema, cvor dodamo na pocetak liste
+
+- svakom cvoru \(x\) dajemo 4 pointera:
+  1. na prvi cvor u \(V(x)\)
+  2. na prvi cvor u \(W(X)\)
+  3. na sljedeci cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
+  4. na prethodni cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
+
+* Guides
+- neformalan opis problema:
+  - pretp da moramo odrzavati niz cijelobrojnih varijabli \( x_k,\ldots,x_1 \) i zelimo da vrijedi da svi \( x_i \le T \) za neku ogradu \( T \)

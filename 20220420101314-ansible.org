@@ -5,3 +5,10 @@
 
 * Documentation
 - [[https://docs.ansible.com][Ansible Docs]]
+
+
+* AdHoc Ansible
+-
+
+* Ansible Playbook
+-

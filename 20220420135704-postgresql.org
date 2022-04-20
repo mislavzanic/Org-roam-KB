@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       848920ed-5455-489f-b036-d1417419277b
+:END:
+#+title: postgresql
+
+* Backup
+- run ~pg_dumpall~ tu create a backup of whole database
+  - before this can be run, password needs to be set for ~postgres~ user:
+    #+begin_src bash
+    sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'pass';"
+    #+end_src
+  - env variables that need to be set:
+    #+begin_src bash
+    export PGUSER=postgres
+    export PGPASS=pass
+    export PGHOST=localhost
+    #+end_src

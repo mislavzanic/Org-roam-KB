@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       41393a2d-2deb-4dc1-a74f-2d5cbf22c8f4
+:END:
+#+title: gcloudCommands
+
+* Disks
+#+begin_src
+gcloud compute disks create DISK_NAME --size DISK_SIZE --type DISK_TYPE
+#+end_src
