@@ -21,7 +21,7 @@
 - exposes the Kubernetes service on the specified port within the cluster. Other pods within the cluster can communicate with this server on the specified port.
 
 *** targetPort
-- the port on which the service will send requests to, that your pod will be listening on. Your application in the container will need to be listening on this port also.
+- the port on which the service will send requests to, that your pod will be listening on. Service targeted app will need to listen on the same port
 
 ** Example
 #+begin_src yaml

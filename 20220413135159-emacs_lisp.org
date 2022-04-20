@@ -18,6 +18,8 @@
 (car '(1 . 2)) ;; 1
 (cdr '(1 . 2)) ;; 2
 
+(cdr '(1 2 3)) ;; (2 3)
+
 (setq some-cons '(1 . 2))
 (setcar some-cons 3)
 some-cons ;; '(3 . 2)

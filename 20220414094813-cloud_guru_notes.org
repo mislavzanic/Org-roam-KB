@@ -4,6 +4,4 @@
 #+title: Cloud Guru Notes
 
 * DevOps path
-** Kubernetes Essentials
-- [[id:56c79c3b-49cb-4abc-99dc-22890d0e2cdc][Building a k8s cluster]]
-- [[id:286c624c-0d47-4710-9d49-9388e5c6a01b][Basic Kubernetes Concepts]]
+- [[id:b46f81ac-3497-4ee9-8811-53e1fa666bdf][DevopsPath]]

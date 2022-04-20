@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       1bd4974e-4d27-4622-ad4c-b5aad69bc97f
+:END:
+#+title: NetworkEndpointGroups
+
+- [[id:01e71170-6f2d-4878-9daf-717bd7cf7ab6][Container-native load balancing through ingress]]

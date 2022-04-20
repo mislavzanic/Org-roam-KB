@@ -3,6 +3,8 @@
 :END:
 #+title: Kubectl useful commands
 
+- [[id:f184d1ce-4983-4ca3-9b03-2061eb3c20f7][KubectlAndGcloud]]
+
 * Pods
 ** Get Pods
 - ~kubectl get pods~
