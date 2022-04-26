@@ -1,4 +1,46 @@
 :PROPERTIES:
 :ID:       76ddab2b-ff62-4d2f-bdfc-4726d4a279a1
 :END:
+#+startup: latexpreview
+#+startup: inlineimages showall
 #+title: Satovi Neposredne Ovisnosti
+
+- slabija verzija [[id:f8d2d65c-a3b2-40c0-ab09-29d4e594f6b7][vektorskog sata]]
+  - procesi i dalje čuvaju vektore
+  - ali se poruka produlji samo jednim cijelim brojem (ne cijelim vektorom -- $O(n)$ cijelih brojeva, $n \in \mathbb{N}$, $n$ je duljina vektora)
+
+
+[[file:./assets/pmf/distribuirano/slika_3_10.png]]
+
+* Java primjer
+
+#+begin_src java
+public class DirectClock  {
+    public int[] clock;
+    int myId;
+    public DirectClock(int numProc, int id)  {
+        myId = id;
+        clock = new int[numProc];
+        for (int i = 0; i < numProc; i++) clock[i] = 0;
+        clock[myId] = 1;
+    }
+
+    public int getValue(int i)  {
+        return clock[i];
+    }
+
+    public void tick()  {
+        clock[myId]++;
+    }
+
+    public void sendAction()  {
+        // sentValue = clock[myId];
+        tick();
+    }
+
+    public void receiveAction(int sender, int sentValue)  {
+        clock[sender] = Util.max(clock[sender], sentValue);
+        clock[myId] = Util.max(clock[myId], sentValue) + 1;
+    }
+}
+#+end_src

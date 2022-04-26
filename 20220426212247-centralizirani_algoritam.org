@@ -1,20 +1,50 @@
 :PROPERTIES:
 :ID:       afa50234-32e4-4f03-aa2e-fe3131dde7e3
 :END:
-#+STARTUP: latexpreview
+#+startup: latexpreview
+#+startup: inlineimages showall
 #+title: Centralizirani algoritam
 
 - najjednostavniji distribuirani algoritam za međusobno isključivanje
 - riječ o primjeru korištenja žetona
 
 * Postupak
-- Jedan od procesa ima ulogu vođe (koordinatora). Vođa je proces koji upravlja kritičnom sekcijom
+- Jedan od procesa ima ulogu vođe (koordinatora)
+  - vođa je proces koji upravlja kritičnom sekcijom
+
 - Proces koji želi ući u kritičnu sekciju šalje vođi poruku /request/
+
 - Vođa pamti zahtjeve u redoslijedu kako ih je primio
-- Vođa daje dozvolu za ulazak u kritičnu sekciju procesu koji je prvi po redoslijedu, i to tako da mu pošalje poruku /okay/.
+
+- Vođa daje dozvolu za ulazak u kritičnu sekciju procesu koji je prvi po redoslijedu, i to tako da mu pošalje poruku /okay/
+
 - Kad proces završi rad u kritičnoj sekciji, on šalje vođi poruku /release/
+
 - Kad vođa primi /release/, on šalje /okay/ idućem po redu procesu koji čeka.
 
+[[file:./assets/pmf/distribuirano/slika_4_6.png]]
+
+
+* Jesu li zadovoljena 3 svojstva
+** Sigurnost
+- Očito je zadovoljena sigurnost. Naime, žeton je samo jedan. Samo onaj proces koji posjeduje žeton može ući u kritičnu sekciju
+
+** Odsustvo izgladnjivanja
+- Također vrijedi odsustvo izgladnjivanja, naime vođa sprema zahtjeve za kritičnom sekcijom u red, pa će svaki zahtjev prije ili kasnije biti odobren
+
+** Pravednost
+- No svojstvo pravednosti nažalost ne mora vrijediti, dakle može se dogoditi da se zahtjevi za kritičnom sekcijom odobravaju u drukčijem redoslijedu nego što su bili postavljeni
+
+*** Primjer
+- Proces $P_i$ šalje zahtjev za dijeljenim resursom procesu-vođi $P_k$
+- Nakon što je poslao zahtjev, $P_i$ šalje poruku nekom drugom procesu $P_j$
+- Nakon što je $P_j$ primio poruku, on također šalje zahtjev vođi $P_k$
+- Zbog osobitosti komunikacije u mreži, dešava se da zahtjev od $P_j$ stiže vođi $P_k$ ranije nego zahtjev od $P_i$
+- Vođa daje procesu $P_j$ pravo pristupa dijeljenom resursu
+- Dakle $P_j$ prvi ulazi u kritičnu sekciju, makar je njegov zahtjev (zbog navedene poruke od $P_i$ do $P_j$) nedvojbeno bio postavljen nakon zahtjeva od $P_i$
+
+
+* Java primjer
   #+begin_src java
   public class CentMutex extends Process implements Lock {
       // assumes that P_0 coordinates and does not request locks.
@@ -55,21 +85,3 @@
       }
   }
   #+end_src
-
-* Jesu li zadovoljena 3 svojstva
-** Sigurnost
-- Očito je zadovoljena sigurnost. Naime, žeton je samo jedan. Samo onaj proces koji posjeduje žeton može ući u kritičnu sekciju
-
-** Odsustvo izgladnjivanja
-- Također vrijedi odsustvo izgladnjivanja, naime vođa sprema zahtjeve za kritičnom sekcijom u red, pa će svaki zahtjev prije ili kasnije biti odobren
-
-** Pravednost
-- No svojstvo pravednosti nažalost ne mora vrijediti, dakle može se dogoditi da se zahtjevi za kritičnom sekcijom odobravaju u drukčijem redoslijedu nego što su bili postavljeni
-
-*** Primjer
-- Proces $P_i$ šalje zahtjev za dijeljenim resursom procesu-vođi $P_k$
-- Nakon što je poslao zahtjev, $P_i$ šalje poruku nekom drugom procesu $P_j$
-- Nakon što je $P_j$ primio poruku, on također šalje zahtjev vođi $P_k$
-- Zbog osobitosti komunikacije u mreži, dešava se da zahtjev od $P_j$ stiže vođi $P_k$ ranije nego zahtjev od $P_i$
-- Vođa daje procesu $P_j$ pravo pristupa dijeljenom resursu
-- Dakle $P_j$ prvi ulazi u kritičnu sekciju, makar je njegov zahtjev (zbog navedene poruke od $P_i$ do $P_j$) nedvojbeno bio postavljen nakon zahtjeva od $P_i$

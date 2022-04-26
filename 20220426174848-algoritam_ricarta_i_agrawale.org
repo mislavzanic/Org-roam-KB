@@ -5,6 +5,15 @@
 #+startup: inlineimages showall
 #+title: Algoritam Ricarta i Agrawale
 
+- poboljšana varijanta Lamportovog algoritma
+- za jedno korištenje kritične sekcije potrebno je samo $2(N-1)$ poruka, te manje memorijskog prostora
+- ušteda se postiže kombiniranjem funkcionalnosti poruka o potvrdi i oslobađanju
+
 * Opis
+- Da bi postavio zahtjev za kritičnom sekcijom, proces šalje žigosanu poruku request svim drugim procesima
+- Kad proces primi poruku request od nekog drugog procesa, on odgovara tom drugom procesu žigosanom porukom okay u slučaju kad on sam nije zainteresiran za kritičnu sekciju ili ako njegov vlastiti zahtjev ima veći žig. Inače proces sprema zahtjev drugog procesa u red čekanja
+
+
+
 
 [[file:./assets/pmf/distribuirano/slika_4_11.png]]
