@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       16e2b116-ecae-4210-b2e4-04912676bd66
+:END:
+#+title: Centralizirani Algoritam
+
+- koristenje zetona
+
+* Postupak
+1. jedan od procesa ima ulogu /vode/ (koordinatora). Voda je proces koji upravlja kriticnom sekcijom
+2. proces koji zeli uci u kriticnu sekciju salje vodi poruku /request/
+3. voda pamti zahtjeve u redoslijedu kako ih je primio
+4. voda daje dozvolu za ulazak u kriticnu sekciju procesu koji je prvi po redoslijedu, i to tako da mu posalje poruku /okay/
+5. kad proces zavrsi rad u kriticnoj sekciji, on salje vodi poruku /release/
+6. kad voda primi /release/, on salje /okay/ iducem po redu procesu koji ceka

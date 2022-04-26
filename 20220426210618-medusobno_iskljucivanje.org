@@ -1,0 +1,37 @@
+:PROPERTIES:
+:ID:       5a62de44-094d-460a-89f3-e218c5988bff
+:END:
+#+title: Medusobno iskljucivanje
+
+- četiri rješenja ovog problema
+  1. centralizirani algoritam
+  2. Lamportov algoritam
+  3. algoritam Ricarta i Agrawale
+  4. algoritam sa žetonom koji kruži
+
+* 4.1 Uvodne napomene
+- primjeri dijeljenih resursa
+  1. /Distribuirana tablica podataka/
+  2. /Telekonferencijska sesija ili chat/
+
+- problem dodjeljivanja dijeljenih resursa svodi se na problem /međusobnog isključivanja/
+  - rad procesa s resursom predstavlja njegovu takozvanu kritičnu sekciju
+  - dva procesa ne smiju se istovremeno nalaziti u svojim kritičnim sekcijama
+
+- algoritmi za međusobno isključivanje iz ovog poglavlja mogu se podijeliti u dvije skupine:
+  1. /algoritmi zasnovani na vremenskim žigovima/
+  2. /algoritmi zasnovani na žetonima (token)/
+
+* 4.2 Specifikacija problema
+- algoritam koji rješava problem međusobnog isključivanja
+  1. /sigurnost (safety)/. Ne smije se dogoditi da dva procesa istovremeno dobiju dozvolu za korištenje kritične sekcije
+  2. /odsustvo izgladnjivanja (liveness)/. Svaki zahtjev za kritičnom sekcijom prije ili kasnije će biti odobren
+  3. /pravednost (fairness)/. Zahtjevi za kritičnom sekcijom odobravaju se u onom redoslijedu kako su bili postavljeni
+
+* 4.3 [[id:afa50234-32e4-4f03-aa2e-fe3131dde7e3][Centralizirani algoritam]]
+
+* 4.4 [[id:8d30fd96-7dd0-4a40-b896-a32356b4db25][Lamportov Algoritam]]
+
+* 4.5 [[id:7d5b0f93-b84c-44e1-a253-b160c36eea3d][Algoritam Ricarta i Agrawale]]
+
+* 4.6 [[id:cbacf810-dfd5-4e44-87e6-10c429e09a3d][Algoritam sa žetonom koji kruži]]

@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       3a3e489c-19a8-4596-b75d-3616f43b70cf
+:END:
+#+title: GNUScreen
+
+* Commands
+- start session
+  #+begin_src shell
+  screen
+  #+end_src
+
+  - start named session
+    #+begin_src shell
+    screen -S session_name
+    #+end_src
+
+  - ~ctrl+a c~ Create a new window
+  - ~ctrl+a "~ List windows
+  - ~ctrl+a 0~ Switch to window 0
+
+  - ~ctrl+a d~ detach from the screen session
+
+  - resume session
+    #+begin_src shell
+    screen -r
+    #+end_src
+
+  - list sessions
+    #+begin_src shell
+    screen -ls
+    #+end_src
+
+  - resume screen 10835.pts-0
+    #+begin_src shell
+    screen -r 10835
+    #+end_src

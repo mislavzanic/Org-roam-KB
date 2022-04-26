@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       7d5b0f93-b84c-44e1-a253-b160c36eea3d
+:END:
+#+startup: latexpreview
+#+startup: inlineimages showall
+#+title: Algoritam Ricarta i Agrawale
+
+* Opis
+
+[[file:./assets/pmf/distribuirano/slika_4_11.png]]

@@ -1,0 +1,4 @@
+:PROPERTIES:
+:ID:       76ddab2b-ff62-4d2f-bdfc-4726d4a279a1
+:END:
+#+title: Satovi Neposredne Ovisnosti

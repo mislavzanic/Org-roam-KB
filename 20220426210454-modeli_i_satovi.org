@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       98080fa7-84bd-45bd-973c-a1be36b27e3d
+:END:
+#+title: Modeli i Satovi
+
+- satovi:
+  1. jednostavni (Lamportov) sat
+  2. vektorski sat
+  3. sat neposredne ovisnosti
+  4. matricni sat
+
+* 3.1 Uvodne napomene
+** Modeli distribuiranog racunanja
+*** Prepletajuci model (interleaving model)
+- pretpostavka da postoji globalni (dijeljeni) fizicki sat
+- pretpostavka da su svi dogadaji trenutacni
+- pretpostavka da se ni jedna dva dogadaja ne desavaju istovremeno
+
+- dogadaji su totalno uredeni
+*** Model dogodilo-se-prije
+- pretpostavka da ne postoji globalni sat
+- dogadaje unutar istog procesa mozemo totalno urediti
+- dogadaje iz razlicitih procesa mozemo samo parcijalno urediti
+  - uredaj za takve dogadaje temelji se na toku podataka iz jednog procesa u drugi (slaje poruka)
+
+* 3.3 [[id:f8d2d65c-a3b2-40c0-ab09-29d4e594f6b7][Vektorski Sat]]
+
+* 3.4 [[id:76ddab2b-ff62-4d2f-bdfc-4726d4a279a1][Satovi Neposredne Ovisnosti]]

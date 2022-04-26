@@ -1,0 +1,4 @@
+:PROPERTIES:
+:ID:       cbacf810-dfd5-4e44-87e6-10c429e09a3d
+:END:
+#+title: Algoritam sa žetonom koji kruži
