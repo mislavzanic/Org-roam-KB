@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       5ab12ebf-c568-4436-9f34-5d2d4ab5d0da
+:END:
+#+title: Globalna snimka
+
+- *Globalna snimka* predstavlja konzistentan skup zabilježenih lokalnih stanja, dakle takav skup gdje su se ta lokalna stanja dogodila (ili su se morala dogoditi), istovremeno u nekom trenutku iz bliže prošlosti
+
+- algoritam koji bilježi konzistentno globalno stanje sustava u bliskoj prošlosti naziva se /algoritam za globalnu snimku/
+  - distribuiranom sustavu zapravo je nemoguće zabilježiti sadašnje globalno stanje
+
+* Primjeri globalne snimke
+
+* Uvodne napomene
+
+* Algoritmi
+1. [[id:8d9d8c7f-8c4b-4e2e-b2ff-813fcb176d32][Algoritam Chandya i Lamporta]]
+2. [[id:21d7d645-cd9d-4140-9ed9-f383f977620b][Algoritam Sender Recording]]

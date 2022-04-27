@@ -1,0 +1,4 @@
+:PROPERTIES:
+:ID:       21d7d645-cd9d-4140-9ed9-f383f977620b
+:END:
+#+title: Algoritam Sender Recording

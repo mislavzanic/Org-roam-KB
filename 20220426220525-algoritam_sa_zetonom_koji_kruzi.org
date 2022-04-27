@@ -1,4 +1,67 @@
 :PROPERTIES:
 :ID:       cbacf810-dfd5-4e44-87e6-10c429e09a3d
 :END:
+#+startup: latexpreview
+#+startup: inlineimages showall
 #+title: Algoritam sa žetonom koji kruži
+
+- nema istaknutog procesa (koordinatora)
+- procesi su organizirani u prsten
+  - svaki proces zna tko mu je prethodnik a tko sljedbenik
+
+- žeton kruži tako što ga procesi kao poruku šalju jedan drugom u zadanom smjeru duž prstena
+- proces koji ima žeton smije ući u kritičnu sekciju
+  - ako ne želi ući u sekciju odmah šalje žeton dalje
+- proces koji želi ući u kritičnu sekciju a nema žeton mora čekati dok žeton ne stigne do njega
+
+  [[file:./assets/pmf/distribuirano/slika_4_13.png]]
+
+* Svojstva
+- očito su zadovoljena svojstva *sigurnosti* i *odsustva od izgladnjivanja*
+- svojstvo *pravednosti* nije ispunjeno
+  -  moguće je da od dva procesa koji su zatražili kritičnu sekciju prije uđe u kritičnu sekciju onaj koji je kasnije postavio zahtjev (jednostavno zato jer mu je žeton prije stigao)
+
+* Java primjer
+#+begin_src java
+import java.util.Timer;
+
+public class CircToken extends Process implements Lock {
+    boolean haveToken;
+    boolean wantCS = false;
+
+    public CircToken(Linker initComm, int coordinator) {
+        super(initComm);
+        haveToken = (myId == coordinator);
+    }
+    public synchronized void initiate() {
+        if (haveToken) sendToken();
+    }
+    public synchronized void requestCS() {
+        wantCS = true;
+        while (!haveToken) myWait();
+    }
+    public synchronized void releaseCS() {
+        wantCS = false;
+        sendToken();
+    }
+    void sendToken() {
+        if (haveToken && !wantCS) {
+            int next = (myId + 1) % N;
+            Util.println("Process " + myId + "has sent the token");
+            sendMsg(next, "token");
+            haveToken = false;
+        }
+    }
+    public synchronized void handleMsg(Msg m, int src, String tag) {
+        if (tag.equals("token")) {
+            haveToken = true;
+            if (wantCS)
+                notify();
+            else {
+                Util.mySleep(1000);
+                sendToken();
+            }
+        }
+    }
+}
+#+end_src

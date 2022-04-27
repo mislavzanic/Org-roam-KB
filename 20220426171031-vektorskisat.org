@@ -5,9 +5,7 @@
 #+startup: inlineimages showall
 #+title: Vektorski Sat
 
-- /Vektorski sat/ je preslikavanje $v: S \to \mathbb{N}^k, k \in \mathbb{N}$ koje zadovoljava slj. uvjet:
-      $\forall s,t \in S$ : $s \to t \iff s.v < t.v$
-  gdje je $s.v$ vektor pridruzen stanju $s$
+- /Vektorski sat/ je preslikavanje $v: S \to \mathbb{N}^k, k \in \mathbb{N}$ koje zadovoljava: $$ (\forall s,t \in S)(s \to t \iff s.v < t.v) $$, gdje je $s.v$ vektor pridruzen stanju $s$
 
   [[file:./assets/pmf/distribuirano/slika_3_8.png]]
 

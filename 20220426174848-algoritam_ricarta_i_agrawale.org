@@ -5,15 +5,89 @@
 #+startup: inlineimages showall
 #+title: Algoritam Ricarta i Agrawale
 
-- poboljšana varijanta Lamportovog algoritma
-- za jedno korištenje kritične sekcije potrebno je samo $2(N-1)$ poruka, te manje memorijskog prostora
+- poboljšana varijanta [[id:8d30fd96-7dd0-4a40-b896-a32356b4db25][Lamportovog algoritma]]
+  - za jedno korištenje kritične sekcije potrebno je samo $2(N-1)$ poruka, te manje memorijskog prostora
 - ušteda se postiže kombiniranjem funkcionalnosti poruka o potvrdi i oslobađanju
 
 * Opis
-- Da bi postavio zahtjev za kritičnom sekcijom, proces šalje žigosanu poruku request svim drugim procesima
-- Kad proces primi poruku request od nekog drugog procesa, on odgovara tom drugom procesu žigosanom porukom okay u slučaju kad on sam nije zainteresiran za kritičnu sekciju ili ako njegov vlastiti zahtjev ima veći žig. Inače proces sprema zahtjev drugog procesa u red čekanja
+- Da bi postavio zahtjev za kritičnom sekcijom, proces šalje žigosanu poruku /request/ svim drugim procesima
+
+- Kad proces primi poruku /request/ od nekog drugog procesa, on odgovara tom drugom procesu žigosanom porukom /okay/ u slučaju kad on sam nije zainteresiran za kritičnu sekciju ili ako njegov vlastiti zahtjev ima *veći žig*. Inače proces sprema zahtjev drugog procesa u red čekanja
+
+- Da bi oslobodio kritičnu sekciju, proces šalje žigosanu poruku /okay/ svim drugim procesima *koji su u njegovom redu čekanja*
+
+- Proces smije ući u kritičnu sekciju ako je:
+  - svim drugim procesima poslao poruku /request/
+  - primio od svih drugih procesa poruku /okay/ kao odgovor
+
+- Kao [[id:98080fa7-84bd-45bd-973c-a1be36b27e3d][logički sat]] može se koristiti najjednostavniji [[id:12d23b0e-3830-4a56-b1b5-33911e9df8fb][Lamportov sat]]. U slučaju jednakih vremenskih žigova, uređaj za žigove se opet “leksikografski” proširuje se do totalnog uređaja, korištenjem identifikatora procesa
+
+- Za razliku od [[id:8d30fd96-7dd0-4a40-b896-a32356b4db25][Lamportovog algoritma]], ne zahtijeva se FIFO uređaj poruku
+
 
 
 
 
 [[file:./assets/pmf/distribuirano/slika_4_11.png]]
+
+
+* Svojstva
+- Lako se vidi da svako izvršavanje kritične sekcije zahtijeva $N-1$ poruka /request/ i $N-1$ poruka /okay/
+
+- Zadovoljena su sva tri važna zahtjeva: *sigurnost*, *odsustvo izgladnjivanja* i *pravednost*
+  - *Odsustvo gladovanja* vrijedi zato što proces s najmanjim žigom ne može biti zaustavljen
+  - *Pravednost* je posljedica činjenice da procesi ulaze u kritičnu sekciju u redoslijedu svojih vremenskih žigova
+  - *Sigurnost:* dokaz:
+    - Pretpostavimo da su $P_i$ i $P_j$ istovremeno u kritičnoj sekciji i da zahtjev od $P_i$ ima manji vremenski žig
+    - $P_j$ je mogao ući u kritičnu sekciju samo ako je od $P_i$ primio /okay/ za svoj zahtjev
+    - Zahtjev od $P_j$ morao je doći do $P_i$ nakon što je $P_i$ postavio svoj zahtjev, jer bi inače žig od $P_i$ bio veći
+    - Iz programskog koda se vidi da je $P_i$ mogao poslati /okay/ prema $P_j$ samo ako je već izašao iz kritične sekcije, što je kontradikciji s polaznom pretpostavkom da su oba istovremeno u kritičnoj sekciji.
+
+
+* Java primjer
+#+begin_src java
+import java.util.*;
+
+public class RAMutex extends Process implements Lock {
+    int myts;
+    LamportClock c = new LamportClock();
+    IntLinkedList pendingQ = new IntLinkedList();
+    int numOkay = 0;
+
+    public RAMutex(Linker initComm) {
+        super(initComm);
+        myts = Symbols.Infinity;
+    }
+    public synchronized void requestCS() {
+        c.tick();
+        myts = c.getValue();
+        broadcastMsg("request", myts);
+        numOkay = 0;
+        while (numOkay < N-1)
+            myWait();
+    }
+    public synchronized void releaseCS() {
+        myts = Symbols.Infinity;
+        while (!pendingQ.isEmpty()) {
+            int pid = pendingQ.removeHead();
+            sendMsg(pid, "okay", c.getValue());
+        }
+    }
+    public synchronized void handleMsg(Msg m, int src, String tag) {
+        int timeStamp = m.getMessageInt();
+        c.receiveAction(src, timeStamp);
+        if (tag.equals("request")) {
+            if ((myts == Symbols.Infinity) // not interested in CS
+                    || (timeStamp < myts)
+                    || ((timeStamp == myts) && (src < myId)))
+                sendMsg(src, "okay", c.getValue());
+            else
+                pendingQ.add(src);
+        } else if (tag.equals("okay")) {
+            numOkay++;
+            if (numOkay == N - 1)
+                notify(); // okayCS() may be true now
+        }
+    }
+}
+#+end_src

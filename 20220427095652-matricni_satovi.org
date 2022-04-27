@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       ba9735bc-7791-465b-83bd-31e9440bb3b0
+:END:
+#+startup: latexpreview
+#+startup: inlineimages showall
+#+title: Matrični satovi
