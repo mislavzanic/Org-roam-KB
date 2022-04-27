@@ -1,7 +1,8 @@
 :PROPERTIES:
 :ID:       b26511c1-f2f1-4d15-8372-97d586391843
 :END:
-#+title: BrodalHeap
+#+startup: latexpreview
+#+title: Brodal Heap
 
 * Notacija
 - \( n_i(x) \) - broj djece cvora \(x\) ranga \(i\)
@@ -10,7 +11,7 @@
 - \(p(x)\) - roditelj od \(x\)
 
 
-* The Data Structure
+* Struktura podataka
 - basic ideja -> priority queue == stabla \(T_1\) and \(T_2\)
   - svi cvorovi sadrze jedan element i prirodni broj (rang)
 - djeca cvora su spremljena u doubly linked listi, djeca su poredana silazno po rangu
@@ -21,7 +22,7 @@
 - S2. \(r(x) < r(p(x))\)
   - rang 'pada'
 - S3. ako \(r(x) > 0\) onda \(n_{r(x)-1}(x) \ge 2\)
-  - == svojstvo koje ima i binomni heap == -> cvor ranga \(k\) mora imat dvoje (kod Brodala barem dvoje) djece ranga \(k-1\)
+  - =svojstvo koje ima i binomni heap= -> cvor ranga \(k\) mora imat dvoje (kod Brodala barem dvoje) djece ranga \(k-1\)
 - S4. \(n_i(x) \in \{0,2,\ldots,7\}\) -> broj djece cvora \(x\) ranga \(i\) je strogo iz \(\{0,2,\ldots,7\}\)
   - bitno svojstvo
   - rezanje djeteta sa najvecim rangom (najljevijeg) ne krsi S3.
@@ -44,10 +45,10 @@
 
 - svakom cvoru \(x\) dajemo 4 pointera:
   1. na prvi cvor u \(V(x)\)
-  2. na prvi cvor u \(W(X)\)
-  3. na sljedeci cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
-  4. na prethodni cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
+  2. na prvi cvor u \(W(x)\)
+  3. na _sljedeci_ cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
+  4. na _prethodni_ cvor u listi \(W\) ili \(V\) kojoj \(x\) pripada
 
-* Guides
+* Guides ASP
 - neformalan opis problema:
   - pretp da moramo odrzavati niz cijelobrojnih varijabli \( x_k,\ldots,x_1 \) i zelimo da vrijedi da svi \( x_i \le T \) za neku ogradu \( T \)

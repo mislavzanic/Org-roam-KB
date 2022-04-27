@@ -1,6 +1,8 @@
 :PROPERTIES:
 :ID:       5ab12ebf-c568-4436-9f34-5d2d4ab5d0da
 :END:
+#+startup: latexpreview
+#+startup: inlineimages showall
 #+title: Globalna snimka
 
 - *Globalna snimka* predstavlja konzistentan skup zabilježenih lokalnih stanja, dakle takav skup gdje su se ta lokalna stanja dogodila (ili su se morala dogoditi), istovremeno u nekom trenutku iz bliže prošlosti
@@ -8,10 +10,51 @@
 - algoritam koji bilježi konzistentno globalno stanje sustava u bliskoj prošlosti naziva se /algoritam za globalnu snimku/
   - distribuiranom sustavu zapravo je nemoguće zabilježiti sadašnje globalno stanje
 
-* Primjeri globalne snimke
-
 * Uvodne napomene
+- _Globalna se snimka ne može dobiti kao jednostavna superpozicija lokalnih stanja_
+  - zamislimo distribuiranu bazu bankovnih podataka
+    - postoje dva sjedišta s računima od istog štediše
+    - štediša ima $500 u prvom sjedištu i $300 u drugom
+    - u toku je transfer $200 iz prvog u drugo sjedišt
+  - jednostavna procedura za zbrajanje stanja mogla bi dati krivi rezultat da štediša ima ukupno $1000
+  - to bi se dogodilo ako se stanje u prvom sjedištu snimi prije transfera, a stanje u drugom sjedištu nakon transfera
+
+** Primjeri primjene globalne snimke
+1. /Ponovno startanje sustava nakon pogreške/
+   - sustav se starta iz nekog zabilježenog konzistentnog globalnog stanja iz bliske prošlosti prije pogreške
+2. /Debuggiranje/
+   - pregled uzastopnih globalnih snimki iz prošlosti može pomoći da se otkrije izvor pogreške u programu
+3. /Proučavanje stabilnih globalnih svojstava/
+
+* Globalna snimka i modeli
+- definicija globalne snimke ovisi o [[id:98080fa7-84bd-45bd-973c-a1be36b27e3d][modelu računanja]]
+  - uz (prepletajući) model fizičkog vremena, globalna snimka bila bi skup lokalnih stanja koja se pojavljuju istovremeno
+  - uz model /dogodilo-se-prije/, globalna snimka bila bi skup lokalnih stanja koja su *sva međusobno konkurentna*
+    - znači, nikoja dva lokalna stanja ne smiju biti u relaciji /dogodilo-se-prije/
+
+- globalna snimka po modelu fizičkog vremena usklađena je s modelom /dogodilo-se-prije/, no obrat ne vrijedi
+
+
+- Neka je model računanja $(E, \to)$, zasnovan na skupu događaja $E$ i relaciji /dogoilo-se-prije/ $\to$. Neka je $<$ totalni uređaj događaja unutar jednog procesa. Tada definiramo:
+
+  - /Rez/ je bilo koji podskup $F$ od $E$ t.d. vrijedi:
+      $$ (f \in F \land e < f) \implies e \in F $$
+
+  - /Konzistentan rez/ ili /globalna snimka/ je bilo koji podskup $F$ od $E$ t.d. vrijedi
+      $$ (f \in F \land e \to f) \implies e \in F $$
 
 * Algoritmi
 1. [[id:8d9d8c7f-8c4b-4e2e-b2ff-813fcb176d32][Algoritam Chandya i Lamporta]]
 2. [[id:21d7d645-cd9d-4140-9ed9-f383f977620b][Algoritam Sender Recording]]
+
+* Java napomene
+- primjeri u gore dva algoritma koristit će ove dvije klase
+
+#+begin_src java
+public interface Camera extends MsgHandler {
+      void globalState();
+}
+public interface CamUser extends MsgHandler {
+      void localState();
+}
+#+end_src

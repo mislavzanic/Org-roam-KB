@@ -1,10 +1,13 @@
 :PROPERTIES:
 :ID:       98080fa7-84bd-45bd-973c-a1be36b27e3d
 :END:
+#+startup: latexpreview
 #+title: Modeli i Satovi
 
+- softverski mehanizmi koji omogućuju da se skup događaja barem parcijalno uredi
+
 * Uvodne napomene
-** Modeli distribuiranog racunanja
+** Modeli distribuiranog računanja
 *** Prepletajuci model (interleaving model)
 - pretpostavka da postoji globalni (dijeljeni) fizicki sat
 - pretpostavka da su svi dogadaji trenutacni
@@ -16,6 +19,36 @@
 - dogadaje unutar istog procesa mozemo totalno urediti
 - dogadaje iz razlicitih procesa mozemo samo parcijalno urediti
   - uredaj za takve dogadaje temelji se na toku podataka iz jednog procesa u drugi (slaje poruka)
+
+* Model distribuiranog sustava
+** Svojstva distribuiranog računalnog sustava
+1. /Nepostojanje globalnog (dijeljenog) sata/
+   - nemoguće je sinkronizirati satove različitih procesora zbog nepredvidivih kašnjenja u komunikaciji
+2. /Nepostojanje dijeljene memorije/
+3. /Nepostojanje mehanizma za otkrivanje kvarova/
+   - ne postoji gornja granica za vrijeme kašnjenja poruk
+   - nije moguće razlikovati spori procesor od pokvarenog procesora
+
+** Definicija modela distribuiranog sustava
+- /Distribuirani sustav/
+  - modeliramo kao asinkroni sustav u kojem procesi međusobno šalju poruke, te u kojem nema ni dijeljene memorije ni globalnog sata
+- /Distribuirani program/
+  - izvršava se kao skup od $N$ sekvencijalnih procesa $\{P_0, P_1, …, P_{N-1}\}$ povezanih skupom jednosmjernih komunikacijskih kanal
+- /Topologija/
+  - može se prikazati usmjerenim grafom – vrhovi predstavljaju procese a lukovi kanale
+
+*** Pretpostavke
+1. kanal ima neograničeni međuspremnik (buffer) i on prenaša poruke bez pogreške
+2. ništa ne pretpostavljamo o redoslijedu poruka
+3. bilo koja poruka isporučuje se s proizvoljno velikim ali konačnim kašnjenjem
+4. stanje kanala definira se kao skup poruka koje su poslane po tom kanalu ali nisu primljene
+5. proces se opisuje skupom stanja, polaznim stanjem i skupom događaja
+6. pojedini događaj može promijeniti stanje jednog procesa i stanje najviše jednog kanala incidentnog tom procesu
+
+* Modeli distribuiranog računanja
+- /Distribuirano izvršavanje/ ili /hod (run)/ je globalni skup događaja. Događaji unutar hoda vremenski su isprepleteni
+
+- /Hod (run)/ ili /računanje/ u modelu dogodilo-se-prije zadaje se parom $(E,\to)$, gdje je $E$ skup svih događaja, a $\to$ je odgovarajuća relacija /dogodilo-se-prije/
 
 * Satovi
 1. [[id:12d23b0e-3830-4a56-b1b5-33911e9df8fb][Lamportov Sat]]
