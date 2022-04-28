@@ -1,0 +1,33 @@
+:PROPERTIES:
+:ID:       21d7d645-cd9d-4140-9ed9-f383f977620b
+:END:
+#+title: Algoritam Sender Recording
+
+- modifikacija [[id:8d9d8c7f-8c4b-4e2e-b2ff-813fcb176d32][algoritma Chandya i Lamporta]]
+  - ovdje stanje kanala _bilježi pošiljatelj umjesto primatelja_ kod [[id:8d9d8c7f-8c4b-4e2e-b2ff-813fcb176d32][Chandya i Lamporta]]
+    - razlog: poruke se u stvarnosti mogu izgubiti, pa je bolje da ih bilježi pošiljatelj
+
+* Opis
+- pretpostavljamo da se, unatoč tome što su kanali jednosmjerni, _kontrolne poruke mogu slati i u suprotnom smjeru_
+- za aplikacijske poruke (u ispravnom smjeru) _ne pretpostavlja se FIFO uređaj_
+- za kontrolne poruke (u suprotnom smjeru) mora vrijediti FIFO uređaj
+
+- mehanizam koji osigurava konzistentnost globalnog stanja opet je zasnovan na bojama
+  - sad se boje daju ne samo procesima nego i porukama.
+- da bi se poruke mogle identificirati, dodaje im se redni broj
+
+- dvije vrste kontrolnih poruka:
+  - /marker/ – obavijest da je proces pocrvenio
+  - /ack/ – potvrda da je proces primio aplikacijsku poruku s određenim rednim brojem
+
+** Pravila algoritma
+- svaki proces je bijeli prije bilježenja svog stanja, a crven nakon bilježenja
+- bijeli proces šalje bijele poruke a crveni crvene
+- bijeli proces postaje crven čim primi crvenu poruku ili /marker/
+- u trenutku kad postane crven, proces šalje /markere/ po _svim svojim ulaznim kanalima u suprotnom smjeru_
+- bijeli proces šalje /ack/ za svaku primljenu _bijelu_ poruku, i to po _odgovarajućem ulaznom kanalu u suprotnom smjeru_
+- _bijeli proces_ bilježi svaku aplikacijsku poruku koju je poslao po određenom kanalu
+  - kad dobije /ack/, tada briše odgovarajuću poruku iz zabilješke
+
+- budući da bijeli proces postaje crven čim primi crvenu poruku, osigurano je da neće biti /rw poruka/
+  - znači da će snimljeno globalno stanje biti konzistentno

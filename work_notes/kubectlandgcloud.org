@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       f184d1ce-4983-4ca3-9b03-2061eb3c20f7
+:END:
+#+title: KubectlAndGcloud
+#+filetags: :work:
+
+* Credentials for a cluster
+- ~gcloud config set project $project && gcloud container clusters get-credentials $cluster_name --region $region~

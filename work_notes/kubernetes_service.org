@@ -1,0 +1,92 @@
+:PROPERTIES:
+:ID:       69d543a9-0941-4dba-8120-7af004a35957
+:END:
+#+title: Kubernetes Service
+#+filetags: :work:
+
+* References
+- link: [[https://kubernetes.io/docs/concepts/services-networking/service/][Kubernetes Service]]
+
+* Service resource
+
+- "stable abstraction point for a bunch of pods"
+- every service has a name and an IP (those are stable (not changing))
+- registers with a clusters native DNS service
+- has a frontend conf (IP, name) and backend conf (Label selector)
+
+- every service with a /label selector/ gets an ~Endpoint~ (list of pod IPs and ports that match the services label selector)
+  - services look up pod IPs using Endpoints
+
+** Ports
+*** port
+- exposes the Kubernetes service on the specified port within the cluster. Other pods within the cluster can communicate with this server on the specified port.
+
+*** targetPort
+- the port on which the service will send requests to, that your pod will be listening on. Service targeted app will need to listen on the same port
+
+** Example
+#+begin_src yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376
+#+end_src
+
+- This specification creates a new Service object named /my-service/, which targets TCP port 9376 on any Pod with the ~app=MyApp~ label
+- The controller for the Service selector continuously scans for Pods that match its selector, and then POSTs any updates to an Endpoint object also named /my-service/
+
+* Service without a selector
+- you can reference external services using a service without a selector
+- selector just creates a *Kubernetes Endpoint* object that points to another k8s resource
+
+- when creating a service without a selector, k8s endpoint must be created explicitly
+  - these two are linked using ~medatada.name~ field
+
+- when using a service without a selector (let's name this service serviceA) to point to a LoadBalancer service (serviceB) in a different cluster, targetPort of serviceA needs to be set to the value of nodePort of serviceB (need to test if this is true)
+
+** Example
+#+begin_src yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9200
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: my-service
+subsets:
+  - addresses:
+      - ip: 192.0.2.42
+    ports:
+      - port: 9200
+#+end_src
+
+* Service Types
+- ~ClusterIP~ < ~NodePort~ < ~LoadBalancer~
+
+** ClusterIP
+- default
+- Gets own IP
+- Only accessible from within cluster
+
+** NodePort
+- Gets cluster-wide *port*
+- Also accessible from outside of cluster
+- all rules from ClusterIP apply
+
+** LoadBalancer
+- integrates with public cloud platform
+- Has an IP address accessible from outside of cluster

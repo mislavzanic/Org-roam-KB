@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       d5db7996-361d-41de-ab9e-94b06df508fb
+:END:
+#+title: Distribuirani sustavi
+
+* Poglavlja
+1. ...
+2. [[id:053ec99e-9c80-4d00-b52d-95f351969357][Distribuirano programiranje u javi]]
+3. [[id:98080fa7-84bd-45bd-973c-a1be36b27e3d][Modeli i Satovi]]
+4. [[id:5a62de44-094d-460a-89f3-e218c5988bff][Međusobno isključivanje]]
+5. [[id:5ab12ebf-c568-4436-9f34-5d2d4ab5d0da][Globalna snimka]]

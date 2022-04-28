@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       3ee2c611-d0be-496e-9eed-d8ded2698785
+:END:
+#+title: GKE
+#+filetags: :work:

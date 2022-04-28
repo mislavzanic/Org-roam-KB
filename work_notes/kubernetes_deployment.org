@@ -1,0 +1,5 @@
+:PROPERTIES:
+:ID:       9deca09b-d3c0-479e-93b4-158c2498c5f5
+:END:
+#+title: Kubernetes Deployment
+#+filetags: :work:

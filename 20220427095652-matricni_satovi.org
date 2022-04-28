@@ -1,9 +1,0 @@
-:PROPERTIES:
-:ID:       ba9735bc-7791-465b-83bd-31e9440bb3b0
-:END:
-#+startup: latexpreview
-#+startup: inlineimages showall
-#+title: Matrični satovi
-
-- proces umjesto vektora pamti matricu
-  - $s.v[i][j]$ bilježi što proces $s.p$ u stanju $s$ zna o tome što proces $P_i$ zna o procesu $P_j$

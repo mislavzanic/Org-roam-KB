@@ -1,0 +1,36 @@
+:PROPERTIES:
+:ID:       2f26fae9-d154-427e-9e5a-0ae9f95d0876
+:END:
+#+title: BrodalHeapASP
+#+startup: latexpreview
+#+startup: entitiespretty
+#+OPTIONS: ^:{}
+#+filetags: :pmf:
+
+- puno tehnickih pretpostavki
+  - posljedice kasnije opisanih transformacija
+
+- PQ == stabla T_{1} and T_{2}
+  - svi cvorovi imaju _rang_ i pointere
+    - rang \to logaritam velicine podstabla cvora
+    - pointeri na najlijevijeg sina i na roditelja
+  - T_{1} i T_{2} "postuju" min heap
+
+- djeca se spremaju u doublylinked listu u opadajucem poretku po rangu
+
+- _good_      \rArr postuje se min heap
+- _violating_ \rArr ne _good_
+
+- t_{1} je min element, stabla T_{1} i T_{2} se spajaju t.d T_{2} ostane prazno
+  - t_{1} postaje cvor najveceg ranga
+
+* S1-S5
+- S1, S2 - slijede iz svojstva stabla
+- S3 - garantira da je velicina podstabla O(c^{r(x)}), c \in N, c \ge 2
+  - t_{i} onda mora imat uvijek min dvoje djece???
+- S4 - broj djece ranga i je konstantan ( \le 7, \ne 1 )
+  - slijedi da svi cvorovi imaju rang i stupanj O(log(n))
+    - cvor x ranga r(x) moze imat max 7 * r(x) = O(r(x))
+  - \le 7 je bitno za konstrukciju kasnije
+  - \ne 1 - mozemo rezat najlijevije sinove tako da x dobije novi rang, a da i dalje vrijedi S3
+      - ako najlijeviji sin y ima rang r(y), tada x ima rang r(y) + 1

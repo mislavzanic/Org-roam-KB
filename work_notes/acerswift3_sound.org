@@ -1,0 +1,25 @@
+:PROPERTIES:
+:ID:       0dfe94d8-41a9-41cb-bac6-35d0056ab424
+:END:
+#+title: AcerSwift3 Sound
+#+filetags: :work:
+
+* Resources
+- [[https://askubuntu.com/questions/1082994/acer-swift-3-microphone-not-working-with-ubuntu-18-04][StackExchange Link]]
+- [[https://forum.manjaro.org/t/no-audio-on-acer-swift-3/57194][sound not working fix]]
+
+* Fix
+- create (or append to) file in ~/etc/modprobe.d~ called ~alsa-base.conf~
+- add lines
+  #+begin_src conf
+    options snd-hda-intel dmic_detect=0
+    options snd-hda-intel model=dell-headset-multi
+  #+end_src
+
+- command
+  #+begin_src sh
+    cat << EOF  | sudo tee /etc/modprobe.d/alsa-base.conf
+    options snd-hda-intel dmic_detect=0
+    options snd-hda-intel model=dell-headset-multi
+    EOF
+  #+end_src

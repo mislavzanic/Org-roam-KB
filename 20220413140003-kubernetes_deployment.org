@@ -1,4 +1,0 @@
-:PROPERTIES:
-:ID:       090548ee-494c-4ee1-ab4f-46740e9fca90
-:END:
-#+title: Kubernetes Deployment

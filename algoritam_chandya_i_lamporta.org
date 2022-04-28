@@ -1,0 +1,143 @@
+:PROPERTIES:
+:ID:       8d9d8c7f-8c4b-4e2e-b2ff-813fcb176d32
+:END:
+#+startup: latexpreview
+#+startup: inlineimages showall
+#+title: Algoritam Chandya i Lamporta
+
+* Pretpostavke
+- svi komunikacijski kanali imaju FIFO svojstvo
+  - bitno za korektnost algoritma
+- svi kanali su jednosmjerni
+
+* Opis
+- algoritam svakom _procesu_ pridružuje “boju” koja može biti bijela ili crvena
+  - izračunata globalna snimka intuitivno odgovara stanju sustava neposredno prije nego što su svi procesi pocrvenili
+- proces je na početku bijeli
+- nakon snimanja lokalnog stanja proces postaje crven
+  - dakle, zabilježeno lokalno stanje procesa je stanje neposredno prije nego što je on pocrvenio
+- pravila mijenjanja boja osiguravaju da su zabilježena lokalna stanja procesa međusobno konkurentna
+- također, ugrađeni su dodatni mehanizmi koji bilježe stanja kanala
+  - dakle pamte se poruke koje su u trenutku snimanja stanja procesa bile na putu iz jednog procesa u drugi
+
+** Mijenjanje boja u algoritmu
+- algoritam se oslanja na posebnu poruku /marker/
+- čim proces pocrveni, on mora _prije bilo kakve druge poruke po svim svojim izlaznim kanalima_ poslati /marker/
+- proces koji primi /marker/ mora odmah pocrveniti ukoliko to već nije prije učinio
+- budući da su kanali FIFO, gornja dva pravila garantiraju da bijeli proces ne može primiti _aplikacijsku poruku_ od crvenog procesa
+  - prvo što prima od crvenog procesa je poruka /marked/, pa samim time i on postaje crven
+- to opet garantira da su zabilježena lokalna stanja međusobno konkurentna
+
+*** 4 vrste aplikacijskih poruka
+1. /ww poruke/
+   - iz bijelog u bijeli proces
+   - poslane i primljene prije globalne snimke
+2. /rr poruke/
+   - iz crvenog u crveni proces
+   - poslane i primljene nakon globalne snimke
+3. /rw poruke/
+   - iz crvenog u bijeli proces
+   - sijeku rez u smjeru natraške
+   - prisustvo takvih poruka značilo bi da je zabilježeno globalno stanje ustvari nekonzistentno
+   - nisu moguće zbog FIFO svojstva kanala i korištenja /markera/
+4. /wr poruke/
+   - iz bijelog u crveni proces
+   - sijeku rez u smjeru prema napred
+   - te poruke čine stanje kanala koje se mora zabilježiti budući da su one na putu u trenutku snimanja
+
+[[file:./assets/pmf/distribuirano/slika_5_4.png]]
+
+** Bilježenje stanja kanala
+- da bi zabilježio stanje kanala, crveni proces $P_j$ pamti sve poruke koje je primio od bijelog procesa $P_i$ nakon što je on sam (dakle $P_j$) pocrvenio.
+- budući da $P_i$ šalje $P_j$ poruku /marker/ u trenutku svog crvenjenja, dolazak /markera/ od $P_i$ do $P_j$ znači da više neće biti bijelih poruka od $P_i$ do $P_j$.
+- dakle $P_j$ može prestati pamtiti poruke čim primi /marker/ od $P_i$.
+
+* Svojstva
+- promjena boje u jednom procesu _odmah se dojavljuje svim susjednim procesima_
+- kad primi takvu dojavu, susjedni proces mora odmah i sam promijeniti boju, što izaziva nove dojave
+- konačni rezultat je sljedeći:
+  - čim jedan proces pocrveni, svi drugi procesi dostupni kanalima posredno ili neposredno od tog prvog procesa također će pocrveniti
+- algoritam stvara dodatnu komunikaciju od $e$ poruka, gdje je $e$ broj jednosmjernih kanala
+- algoritam ne precizira kako da se zabilježena lokalna stanja procesa i kanala kombiniraju u cjeloviti izvještaj
+  - jedan način kombiniranja bio bi da svaki proces pošalje svoj dio snimke nekom određenom procesu $P_0$
+
+* Java primjer
+#+begin_src java
+import java.util.*;
+
+public class RecvCamera  extends Process implements Camera {
+    static final int white = 0, red = 1;
+    int myColor = white;
+    boolean closed[];
+    CamUser app;
+    LinkedList chan[] = null;
+
+    public RecvCamera(Linker initComm, CamUser app) {
+        super(initComm);
+        closed = new boolean[N];
+        chan = new LinkedList[N];
+        for (int i = 0; i < N; i++)
+            if (isNeighbor(i)) {
+                closed[i] = false;
+                chan[i] = new LinkedList();
+            } else closed[i] = true;
+        this.app = app;
+    }
+    public synchronized void globalState() {
+        myColor = red;
+        app.localState(); // record local State;
+        sendToNeighbors("marker", myId);  // send Markers
+    }
+    public synchronized void handleMsg(Msg m, int src, String tag) {
+        if (tag.equals("marker")) {
+            if (myColor == white) globalState();
+            closed[src] = true;
+            if (isDone()){
+                System.out.println("Channel State: Transit Msgs ");
+                for (int i = 0; i < N; i++)
+                    if (isNeighbor(i))
+                        while (!chan[i].isEmpty())
+                            System.out.println(((Msg) chan[i].removeFirst()).toString());
+            }
+        } else { // application message
+            if ((myColor == red) && (!closed[src]))
+                chan[src].add(m);
+            app.handleMsg(m, src, tag); // give it to app
+        }
+    }
+    boolean isDone() {
+        if (myColor == white) return false;
+        for (int i = 0; i < N; i++)
+            if (!closed[i]) return false;
+        return true;
+    }
+}
+#+end_src
+
+** Objašnjenje
+- proces koristi:
+  - vezanu listu ~chan[k]~ da bi pamtio stanje k-tog ulaznog kanala
+  - =boolean= vrijednost ~closed[k]~ da bi znao kad treba zaustaviti pamćenje poruka duž tog kanala
+
+- na početku se varijable inicijaliziraju tako da svi kanali budu *prazni i otvoreni*
+- varijabla ~MyColor~ je boja lokalnog procesa, na početku bijela
+- objekt ~app~ predstavlja aplikaciju čiju globalnu snimku radimo
+
+- poziv ~isNeighbor(i)~ provjerava postoji li kanal od procesa $P_i$ do _lokalnog procesa_ $P_j$
+- implementacija zapravo radi s dvosmjernim kanalima, no koristi ih kao dva jednosmjerna budući da pamti samo primljene poruke
+
+- metoda ~globalState()~ mijenja boju procesa u crvenu, bilježi njegovo lokalno stanje i šalje poruku /marker/ duž svih izlaznih kanala
+
+- metoda ~handleMsg()~ najprije implementira postupak kod prijema poruke /marker/
+  - ako je proces bijel, on pocrveni tako što poziva ~globalState()~
+  - odgovarajući kanal se zatvara budući da po njemu više ne mogu doći /wr poruke/
+  - poziv ~isDone()~ određuje je li proces zabilježio svoje lokalno stanje i sve ulazne kanale – ako jest, onda se ispisuje zabilježeni sadržaj kanala
+
+  - prijem poruke /marker/ znači da je neki proces $P_{src}$ postao crven i poslao poruku niz sve svoje kanale da je on pocrvenio
+    - lokalni (ovaj) proces zbog toga pocrveni i zatvara kanal sa $P_{src}$
+      - ako ne postoji niti jedan otvoreni kanal, lokalni proces čita poruke
+      - ako postoji otvoreni kanal, lokalni proces sprema tzv. /wr poruke/ (poruke koje bijeli proces šalje, a lokalni (crveni) prima)
+
+- metoda ~handleMsg()~ u nastavku implementira postupak pamćenja /wr poruka/
+  - poruka se prepisuje u odgovarajuću vezanu listu ~chan[src]~ i zatim prosljeđuje aplikaciji
+  - uvjet ~((myColor == red) && (!closed[src]))~ osigurava da je zaista bila riječ o /wr poruci/

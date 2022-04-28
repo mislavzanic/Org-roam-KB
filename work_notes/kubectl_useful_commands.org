@@ -1,0 +1,185 @@
+:PROPERTIES:
+:ID:       cb3e6187-0e22-4075-8d1c-e13b65b683b8
+:END:
+#+title: Kubectl useful commands
+#+filetags: :work:
+
+- [[id:f184d1ce-4983-4ca3-9b03-2061eb3c20f7][KubectlAndGcloud]]
+
+* Pods
+** Get Pods
+- ~kubectl get pods~
+  #+begin_src sh
+    cloud_user@b0415b8e872c:~$ kubectl get pods
+    NAME    READY   STATUS    RESTARTS   AGE
+    nginx   1/1     Running   0          34s
+  #+end_src
+
+  - ~kubectl get pods -o wide~
+    #+begin_src sh
+      cloud_user@b0415b8e872c:~$ kubectl get pods -o wide
+      NAME    READY   STATUS    RESTARTS   AGE   IP           NODE                           NOMINATED NODE   READINESS GATES
+      nginx   1/1     Running   0          41s   10.244.1.2   b0415b8e871c.mylabserver.com   <none>           <none>
+    #+end_src
+
+** Describe a pod
+- ~kubectl describe pod $pod_name~
+  #+begin_src bash
+    cloud_user@b0415b8e872c:~$ kubectl describe pod nginx
+    Name:         nginx
+    Namespace:    default
+    Priority:     0
+    Node:         b0415b8e871c.mylabserver.com/172.31.127.180
+    Start Time:   Thu, 14 Apr 2022 12:42:50 +0000
+    Labels:       <none>
+    Annotations:  <none>
+    Status:       Running
+    IP:           10.244.1.2
+    IPs:
+      IP:  10.244.1.2
+    Containers:
+      nginx:
+        Container ID:   docker://c07f62275d5c9e2453da7bf8d71a7f4b14d1b70d64d2b5e09156c87947510e4d
+        Image:          nginx
+        Image ID:       docker-pullable://nginx@sha256:2275af0f20d71b293916f1958f8497f987b8d8fd8113df54635f2a5915002bf1
+        Port:           <none>
+        Host Port:      <none>
+        State:          Running
+          Started:      Thu, 14 Apr 2022 12:43:01 +0000
+        Ready:          True
+        Restart Count:  0
+        Environment:    <none>
+        Mounts:
+          /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vxtmx (ro)
+    Conditions:
+      Type              Status
+      Initialized       True
+      Ready             True
+      ContainersReady   True
+      PodScheduled      True
+    Volumes:
+      kube-api-access-vxtmx:
+        Type:                    Projected (a volume that contains injected data from multiple sources)
+        TokenExpirationSeconds:  3607
+        ConfigMapName:           kube-root-ca.crt
+        ConfigMapOptional:       <nil>
+        DownwardAPI:             true
+    QoS Class:                   BestEffort
+    Node-Selectors:              <none>
+    Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+    Events:
+      Type    Reason     Age   From               Message
+      ----    ------     ----  ----               -------
+      Normal  Scheduled  12m   default-scheduler  Successfully assigned default/nginx to b0415b8e871c.mylabserver.com
+      Normal  Pulling    12m   kubelet            Pulling image "nginx"
+      Normal  Pulled     12m   kubelet            Successfully pulled image "nginx" in 7.86320006s
+      Normal  Created    12m   kubelet            Created container nginx
+      Normal  Started    12m   kubelet            Started container nginx
+  #+end_src
+
+** Delete a pod
+- ~kubectl delete pod $pod_name~
+  #+begin_src bash
+    cloud_user@b0415b8e872c:~$ kubectl delete pod nginx
+    pod "nginx" deleted
+  #+end_src
+
+
+* Nodes
+** Get Nodes
+- ~kubectl get nodes~
+  #+begin_src sh
+    cloud_user@b0415b8e872c:~$ kubectl get nodes
+    NAME                           STATUS   ROLES                  AGE    VERSION
+    b0415b8e871c.mylabserver.com   Ready    <none>                 113m   v1.22.6
+    b0415b8e872c.mylabserver.com   Ready    control-plane,master   123m   v1.22.6
+    b0415b8e873c.mylabserver.com   Ready    <none>                 110m   v1.22.6
+  #+end_src
+
+** Describe a node
+- ~kubectl describe node $node_name~
+#+begin_src sh
+cloud_user@b0415b8e872c:~$ kubectl describe node b0415b8e872c.mylabserver.com
+Name:               b0415b8e872c.mylabserver.com
+Roles:              control-plane,master
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=b0415b8e872c.mylabserver.com
+                    kubernetes.io/os=linux
+                    node-role.kubernetes.io/control-plane=
+                    node-role.kubernetes.io/master=
+                    node.kubernetes.io/exclude-from-external-load-balancers=
+Annotations:        flannel.alpha.coreos.com/backend-data: {"VNI":1,"VtepMAC":"3a:04:6b:10:e4:1b"}
+                    flannel.alpha.coreos.com/backend-type: vxlan
+                    flannel.alpha.coreos.com/kube-subnet-manager: true
+                    flannel.alpha.coreos.com/public-ip: 172.31.119.182
+                    kubeadm.alpha.kubernetes.io/cri-socket: /var/run/dockershim.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Thu, 14 Apr 2022 10:44:11 +0000
+Taints:             node-role.kubernetes.io/master:NoSchedule
+Unschedulable:      false
+Lease:
+  HolderIdentity:  b0415b8e872c.mylabserver.com
+  AcquireTime:     <unset>
+  RenewTime:       Thu, 14 Apr 2022 13:11:03 +0000
+Conditions:
+  Type                 Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----                 ------  -----------------                 ------------------                ------                       -------
+  NetworkUnavailable   False   Thu, 14 Apr 2022 11:07:03 +0000   Thu, 14 Apr 2022 11:07:03 +0000   FlannelIsUp                  Flannel is running on this node
+  MemoryPressure       False   Thu, 14 Apr 2022 13:07:27 +0000   Thu, 14 Apr 2022 10:44:06 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure         False   Thu, 14 Apr 2022 13:07:27 +0000   Thu, 14 Apr 2022 10:44:06 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure          False   Thu, 14 Apr 2022 13:07:27 +0000   Thu, 14 Apr 2022 10:44:06 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready                True    Thu, 14 Apr 2022 13:07:27 +0000   Thu, 14 Apr 2022 11:07:07 +0000   KubeletReady                 kubelet is posting ready status. AppArmor enabled
+Addresses:
+  InternalIP:  172.31.119.182
+  Hostname:    b0415b8e872c.mylabserver.com
+Capacity:
+  cpu:                2
+  ephemeral-storage:  20263484Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             1998412Ki
+  pods:               110
+Allocatable:
+  cpu:                2
+  ephemeral-storage:  18674826824
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             1896012Ki
+  pods:               110
+System Info:
+  Machine ID:                 9ef2866073d1434aa3bdbde3f2f26eb1
+  System UUID:                ec297de0-85c6-d8fa-c9fd-ff3c9fad5505
+  Boot ID:                    16ccb687-7b75-4188-9786-1e4585ed3dea
+  Kernel Version:             5.4.0-1066-aws
+  OS Image:                   Ubuntu 18.04.6 LTS
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://18.6.1
+  Kubelet Version:            v1.22.6
+  Kube-Proxy Version:         v1.22.6
+PodCIDR:                      10.244.0.0/24
+PodCIDRs:                     10.244.0.0/24
+Non-terminated Pods:          (6 in total)
+  Namespace                   Name                                                    CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                                    ------------  ----------  ---------------  -------------  ---
+  kube-system                 etcd-b0415b8e872c.mylabserver.com                       100m (5%)     0 (0%)      100Mi (5%)       0 (0%)         146m
+  kube-system                 kube-apiserver-b0415b8e872c.mylabserver.com             250m (12%)    0 (0%)      0 (0%)           0 (0%)         146m
+  kube-system                 kube-controller-manager-b0415b8e872c.mylabserver.com    200m (10%)    0 (0%)      0 (0%)           0 (0%)         146m
+  kube-system                 kube-flannel-ds-fqzs6                                   100m (5%)     100m (5%)   50Mi (2%)        50Mi (2%)      124m
+  kube-system                 kube-proxy-7zcm8                                        0 (0%)        0 (0%)      0 (0%)           0 (0%)         146m
+  kube-system                 kube-scheduler-b0415b8e872c.mylabserver.com             100m (5%)     0 (0%)      0 (0%)           0 (0%)         147m
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                750m (37%)  100m (5%)
+  memory             150Mi (8%)  50Mi (2%)
+  ephemeral-storage  0 (0%)      0 (0%)
+  hugepages-1Gi      0 (0%)      0 (0%)
+  hugepages-2Mi      0 (0%)      0 (0%)
+Events:              <none>
+#+end_src

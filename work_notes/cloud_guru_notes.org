@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       a4a47d05-4daa-4b91-ba93-7ce6a6c61ba1
+:END:
+#+title: Cloud Guru Notes
+#+filetags: :work:
+
+* DevOps path
+- [[id:b46f81ac-3497-4ee9-8811-53e1fa666bdf][DevopsPath]]

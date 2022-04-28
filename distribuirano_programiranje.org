@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       053ec99e-9c80-4d00-b52d-95f351969357
+:END:
+#+title: Distribuirano programiranje u javi
+
+* IP adrese i imena računala
+- IP adresa adresa računala te njegovo simboličko ime zajedno se predočuju kao objekt iz klase ~InetAddress~
+  - metode klase ~InetAddress~:
+    - ~public static InetAddress getByname(String)~ - određuje IP adresu računala sa zadanim imenom
+    - ~public static InetAddress getLocalHost()~ - vraća IP adresu lokalnog računala
+    - ~public byte[] getAddress()~ - vraća sirovu IP adresu dotičnog objekta, dakle adresu u binarnom obliku
+    - ~public String getHostAddress()~ - vraća IP adresu dotičnog objekta u /dotted-decimal/ obliku
+      - npr. ~34.51.234.9~
+    - ~public String getHostName()~ - vraća puno ime računala za dotični objekt
+
+* Utičnice zasnovane na UDP protokolu
+- omogućuje bespojnu komunikaciju procesa
+- podatkovni objekt koji se šalje ili prima preko UDP protokola naziva se /datagram/
+
+- UDP je nepouzdan i efikasan protokol
+  - nema garancije da će datagrami uopće stići
+
+- datagramska utičnica predstavljena je u Javi objektom iz klase s punim nazivom ~java.net.DatagramSocket~

@@ -1,0 +1,54 @@
+:PROPERTIES:
+:ID:       f8d2d65c-a3b2-40c0-ab09-29d4e594f6b7
+:END:
+#+startup: latexpreview
+#+startup: inlineimages showall
+#+title: Vektorski Sat
+
+- /Vektorski sat/ je preslikavanje $v: S \to \mathbb{N}^k, k \in \mathbb{N}$ koje zadovoljava:
+     h$$ (\forall s,t \in S)(s \to t \iff s.v < t.v) $$,
+  gdje je $s.v$ vektor pridruzen stanju $s$
+
+  [[file:./assets/pmf/distribuirano/slika_3_8.png]]
+
+* Svojstva
+- duljina vektora $k \in \mathbb{N}$ je broj procesa koji se pojavljuju u nekoj aplikaciji
+- $v$ je vrijednost vektorskog sata
+- nakon svakog dogadaja proces poveca za 1 "svoju" komponentu vektorskog sata
+- kod svakog slanja poruke, proces salje kopiju svog vektorskog sata zajedno sa porukom
+- kod primanja poruke, proces azurira svoj vektorski sat uzimajuci maksimume po komponentama s vektorskim satom koji je stigao s porukom
+
+* Java primjer
+
+  #+begin_src java
+  public class VectorClock {
+      public int[] v;
+      int myId;
+      int N;
+      public VectorClock(int numProc, int id) {
+          myId = id;
+          N = numProc;
+          v = new int[numProc];
+          for (int i = 0; i < N; i++) v[i] = 0;
+          v[myId] = 1;
+      }
+      public void tick() {
+          v[myId]++;
+      }
+      public void sendAction() {
+          //include the vector in the message
+          v[myId]++;
+      }
+      public void receiveAction(int[] sentValue) {
+          for (int i = 0; i < N; i++)
+              v[i] = Util.max(v[i], sentValue[i]);
+          v[myId]++;
+      }
+      public int getValue(int i) {
+          return v[i];
+      }
+      public String toString(){
+          return Util.writeArray(v);
+      }
+  }
+  #+end_src

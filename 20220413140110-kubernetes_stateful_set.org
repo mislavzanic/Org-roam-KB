@@ -1,4 +1,0 @@
-:PROPERTIES:
-:ID:       8ea71d18-c3b7-4a41-a6d3-8fdc28a6ba7b
-:END:
-#+title: Kubernetes Stateful Set
