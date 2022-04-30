@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       df90a262-75e6-4ca0-b998-eb3d12d04d5f
 :END:
-#+title: BrodalHeapInvariants
+#+title: BH_Invariants
 #+filetags: :notes:
 #+startup: entitiespretty
 

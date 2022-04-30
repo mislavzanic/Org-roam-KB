@@ -1,11 +1,10 @@
 :PROPERTIES:
 :ID:       514fd75b-a32a-4f4c-be0f-f656c8cf8877
 :END:
-#+title: BrodalHeapLinkingTrees
+#+title: BH_LinkingTrees
 #+filetags: :notes:
 #+startup: entitiespretty
 
-* Linking
 - pp da imamo cvorove x, y, z, t.d. je x najmanji
   - tada mozemo napraviti:
 
@@ -14,16 +13,3 @@
               (z) (y)
     - odgovor na pitanje u [[id:146868eb-5ff2-4a3e-bd6d-d44a26ac9155][BrodalHeapASP]]
       - na pocetku je t_{1}, onda se doda t_{2}, onda se doda x -> to "pokrece" spajanje i dobivamo stablo T_{1} t.d je r(t_{1}) = 1
-
-* Delinking
-1. x ima tocno 2 ili 3 sina ranga r(x) - 1
-   - takvi sinovi se mogu odrezat
-   - x dobiva rang najveceg _preostalog_ sina + 1
-   - ima smisla jer se visina x smanji za tocno onoliko koliko je maknuto -> nova visina je visina najveceg djeteta + 1
-   - invarijante i daje vrijede
-
-2. x ima \ge 4 sina ranga r(x) - 1
-   - 2 sina se maknu --> x ima jos \ge 2 sina ranga r(x) - 1
-     - invarijante i dalje vrijede
-
-- delinkanje stabla ranga k dobijemo dva ili tri stabla ranga k - 1 i stablo ranga najvise k (2. \to (= k), 1. \to (< k))

@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       8f3519f8-c1be-4387-ae21-c15cfaf4627a
+:END:
+#+title: BH_CuttingTrees
+#+filetags: :notes:
+#+startup: entitiespretty
+
+1. x ima tocno 2 ili 3 sina ranga r(x) - 1
+   - takvi sinovi se mogu odrezat
+   - x dobiva rang najveceg _preostalog_ sina + 1
+   - ima smisla jer se visina x smanji za tocno onoliko koliko je maknuto -> nova visina je visina najveceg djeteta + 1
+   - invarijante i daje vrijede
+
+2. x ima \ge 4 sina ranga r(x) - 1
+   - 2 sina se maknu --> x ima jos \ge 2 sina ranga r(x) - 1
+     - invarijante i dalje vrijede
+
+3. delinkanje stabla ranga k dobijemo dva ili tri stabla ranga k - 1 i stablo ranga najvise k (2. \to (= k), 1. \to (< k))

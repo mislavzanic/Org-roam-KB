@@ -1,0 +1,34 @@
+:PROPERTIES:
+:ID:       b3db116f-498f-4050-b8b8-9f761ec695f2
+:END:
+#+title: BH_ViolationReducingTransformations
+#+filetags: :notes:
+#+startup: entitiespretty
+
+- za /potencijalno/ lose cvorove istog ranga k < r(t_{1}) x_{1} i x_{2}
+  - pretpostavljamo da nisu korijeni ili sinovi korijena (t_{1} i t_{2})
+
+- provijerimo dali x_{1} i x_{2} jesu losi
+  - ako jedan od njih nije, izbacimo ga iz liste V odnosno W
+
+- BSOMP da su x_{1} i x_{2} braca (imaju istog roditelja)
+  - ako nisu, BSOMP da p(x_{1}) \le p(x_{2})
+    - tada uzmemo brata (istog ranga) od x_{2} (neka je to z) i zamijenimo podstablo sa korijenom x_{1} sa podstablom sa korijenom z (napravimo swap podstabla)
+    - time se broj losih cvorova moze samo smanjiti (potencijalno los z moze postat dobar)
+
+- pretpostavimo da je y roditelj od x_{1} i x_{2}
+  1. r(y) > k+1
+     1. x_{1} ima \ge 2 brata ranga k
+        - odrezemo podstablo x_{1} i ucinimo ga dobrim sinom od t_{1} (moguce zbog pretpostavke da je t_{1} najmanji u stablu)
+        - S4 je i dalje zadovoljen jer y ima jos minimalno 2 sina ranga k
+     2. x_{1} i x_{2} su jedini sinovi ranga k
+        - podstabla sa korijenima u x_{1} i x_{2} mozemo [[id:7b4f5800-0d15-45e5-bbaf-9ce685f640a1][odrezat]] i dodamo ih t_{1}
+        - moramo oba odrezat zbog S4
+
+  2. r(y) = k+1
+     - rezemo x_{1}, x_{2} i y
+     - r(y) postaje rang najveceg sina + 1
+     - y zamijenimo sinom od t_{1} ranga k+1
+       - ako zamjena postane los cvor, dodamo ga u W(t_{1})
+       - ako je y vec sin od t_{1}, onda samo odrezemo y, nis ne dodajemo
+     - x_{1}, x_{2} i y postaju dobri sinovi cvora t_{1}

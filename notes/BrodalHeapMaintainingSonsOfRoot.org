@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       7b4f5800-0d15-45e5-bbaf-9ce685f640a1
 :END:
-#+title: BrodalHeapMaintainingSonsOfRoot
+#+title: BH_MaintainingSonsOfRoot
 #+filetags: :notes:
 #+startup: latexpreview
 #+startup: entitiespretty
@@ -13,12 +13,12 @@
 - t_{1} ima pointer na dijete svakog ranga i \in {0,...,r(t_{1}) - 1}
 - takvi postoje zbog [[id:e4c6a0ba-00d9-4a0a-a696-7feb3556a9b4][R1]]
 
-** dodavanje sina ranga i
+** Dodavanje sina ranga i
 *** rang i \in {r(t_{1}) - 2, r(t_{1}) - 1}
 - uvijek ih je \ge 2, \le 7 -> [[id:e4c6a0ba-00d9-4a0a-a696-7feb3556a9b4][R1]]
   - za to se rucno brinemo
 
-*** rang i < r(t_{1}) - 2
+*** Rang i < r(t_{1}) - 2
 - potrebna 4 [[id:7fdf4193-3be4-49e2-b9a3-dda18e5ff8f7][BrodalHeapGuide]]
   - dva za svaki korijen t_{i} --> /guide/ je array brojeva; guide[i] -> broj sinova ranga i
     - jedan kako bi osigurao da vrijedi $n_{j}(t_{i}) \le 7$, a drugi $n_{j}(t_{i}) \ge 2$
@@ -32,6 +32,10 @@
      - radimo samo kada n_{i}(t_{1}) == 7 --> da ne remetimo /guide/-a za donju granicu (n_{i}(t_{1}) \ge 2)
      - ako stvorimo previse novih sinova ranga > r(t_{1}) - 3, onda spajamo sinove ranga > r(t_{1}) - 3 i mby povecamo rang od t_{1}
 
-** rezanje sina ranga i
+** Rezanje sina ranga i
 - isto kao dodavanje
   - REDUCE(i) je sad delinkanje stabla
+
+* t_{2}
+- linkanje u t_{2} nikad ne radi violacije
+- delinkanje radi \le 3 nove violacije
