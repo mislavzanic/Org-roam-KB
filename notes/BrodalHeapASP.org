@@ -1,11 +1,9 @@
 :PROPERTIES:
-:ID:       2f26fae9-d154-427e-9e5a-0ae9f95d0876
+:ID:       146868eb-5ff2-4a3e-bd6d-d44a26ac9155
 :END:
 #+title: BrodalHeapASP
-#+startup: latexpreview
+#+filetags: :notes:
 #+startup: entitiespretty
-#+OPTIONS: ^:{}
-#+filetags: :pmf:
 
 - puno tehnickih pretpostavki
   - posljedice kasnije opisanih transformacija
@@ -27,10 +25,14 @@
 * S1-S5
 - S1, S2 - slijede iz svojstva stabla
 - S3 - garantira da je velicina podstabla O(c^{r(x)}), c \in N, c \ge 2
-  - t_{i} onda mora imat uvijek min dvoje djece???
+  - t_{i} onda mora imat uvijek min dvoje djece??? ---> [[id:b2400e65-1a4e-4a1a-a92c-0c46cae106d1][odgovor]]
 - S4 - broj djece ranga i je konstantan ( \le 7, \ne 1 )
   - slijedi da svi cvorovi imaju rang i stupanj O(log(n))
     - cvor x ranga r(x) moze imat max 7 * r(x) = O(r(x))
   - \le 7 je bitno za konstrukciju kasnije
   - \ne 1 - mozemo rezat najlijevije sinove tako da x dobije novi rang, a da i dalje vrijedi S3
       - ako najlijeviji sin y ima rang r(y), tada x ima rang r(y) + 1
+
+* Violating cvorovi
+
+- [[id:e4c6a0ba-00d9-4a0a-a696-7feb3556a9b4][BrodalHeapViolating]]

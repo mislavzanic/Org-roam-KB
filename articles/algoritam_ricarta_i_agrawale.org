@@ -4,6 +4,7 @@
 #+startup: latexpreview
 #+startup: inlineimages showall
 #+title: Algoritam Ricarta i Agrawale
+#+filetags: :article:
 
 - poboljšana varijanta [[id:8d30fd96-7dd0-4a40-b896-a32356b4db25][Lamportovog algoritma]]
   - za jedno korištenje kritične sekcije potrebno je samo $2(N-1)$ poruka, te manje memorijskog prostora

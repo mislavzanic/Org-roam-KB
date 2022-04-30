@@ -1,0 +1,42 @@
+:PROPERTIES:
+:ID:       e4c6a0ba-00d9-4a0a-a696-7feb3556a9b4
+:END:
+#+title: BrodalHeapViolating
+#+startup: entitiespretty
+#+tags: :pmf:
+
+- podskupovi cvorova
+- V(x), W(x), \forall x \in T_{1} \cup T_{2}
+  - cvorovi veci od x iz T_{1} i T_{2}
+  - *ne mora vrijediti* y \in W(x) \cup V(x) \rArr r(y) \le r(x)
+- implementirani kao doublylinked liste
+
+- svaki cvor ima pointere na svoje skupove, kao i na svoje mjesto u skupu W/V (ako se nalazi u jednom)
+
+- V(x) - violating cvorovi visokog ranga
+- W(x) - violating cvorovi niskog ranga
+- ako y zelimo spremiti u V/W
+  - y ide u V(x) ako r(x) \le r(y)
+  - y ide u W(x) inace
+
+- ideja iza konstrukcije V i W
+  - DECREASE_KEY - svakom takvom operacijom se dodaje novi cvor u V(t_{1}) ili W(t_{1})
+    - rade se dvije transformacije kako bi se izbjeglo gomilanje cvorova u V(t_{1}) ili W(t_{1})
+      1. pomicanje sinova t_{2} u t_{1} t.d. se rang od t_{1} poveca
+      2. zamijeni dvije violacije ranga k sa najvise jednom ranga k+1 u W(t_{1}) -> [[id:7fdf4193-3be4-49e2-b9a3-dda18e5ff8f7][REDUCE]]
+
+* O1-O5
+- O1 - t_{1} = min{T_{1} \cup T_{2}}
+- O2 - elementi postuju min heap s obzirom na skupove W i V
+- O3 - svi se violating cvorovi nalaze u V ili W
+- O4, O5 - len(V(x)) i len(W(x)) su O(log(n)), \forall x \in T_{1} \cup T_{2}
+
+- \alpha == broj "velikih" violacija (takvih da y \in V(x)) koje mogu nastat povecanjem ranga od t_{1}
+  - zasto je konstantan?
+
+* R1-R3
+- odnose se na t_{1} i t_{2}
+- R1 - t_{i} ima [2,7] djece svakog rang (0,...,r(t_{i}) - 1)
+  - bitno kasnije
+- R2 + O5
+- R3 je definicija od W(t_{1})

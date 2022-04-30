@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       fab864af-3fc3-48f8-9a07-6dce986f54a0
+:END:
+#+title: Inbox
+* Analiza
+- pogledat integral 1/(x * e^x) dx
